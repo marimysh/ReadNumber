@@ -22,6 +22,7 @@ protected:
 
 private:
     Ui::MainWindow *ui;
+
     // Указатель на объект нашего класса
     QPaintWidget *wgt;
 };
