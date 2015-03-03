@@ -1,4 +1,4 @@
-class FindSymbol
+/*class FindSymbol
 {
 public:
   {
@@ -28,7 +28,7 @@ public:
     void BoldSymbol();
 
     void MakeMapTypeSymbol(int x[][]);  //формирует карту символа с уже имеющейся
-  }
+  };
   
   //Вспомогательные функции
 private:
@@ -37,7 +37,7 @@ private:
     int Map[][];  //карта символа
     void LiteMapSymbol();
     void GravityCenter(); 
-  }
+  };
 }
 
 //Облегчаем карту, чтобы сделать значения при вычислении центра тяжести меньше
@@ -83,3 +83,4 @@ void FindSymbol::FindSymbol(int x[][])
   this.GCx = 0;
   this.GCy = 0;
 }
+*/

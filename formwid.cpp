@@ -57,6 +57,31 @@ void FormWid::paintEvent(QPaintEvent *) {
     p.begin(inputImg);
     //p.drawLine( 0,0,10,10 );
 
+    if (mDrawBuffer.size()<1) return;
+    QPen pen = QPen();
+    pen.setStyle(Qt::SolidLine);
+    pen.setWidth(5);
+    pen.setBrush(Qt::black);
+    pen.setCapStyle(Qt::RoundCap);
+    pen.setJoinStyle(Qt::RoundJoin);
+
+    QPainter painter(this);
+    painter.setPen(pen);
+    //painter.setCompositionMode(QPainter::CompositionMode_Clear);
+    QList<QPoint>::const_iterator it = mDrawBuffer.begin();
+    QPoint start = *it;
+    it++;
+    //QList<QPoint>::const_iterator it2 = mDrawBuffer.end();
+    //QPoint end = *it2;
+    painter.drawLine(start,start);
+
+        while(it != mDrawBuffer.end()) {
+            QPoint end = *it;
+            painter.drawLine(start,end);
+            start = end;
+            it++;
+        }
+
     /*
     QPainter p(); // Создаём новый объект рисовальщика
     p.begin(inputImg);*/
@@ -64,3 +89,68 @@ void FormWid::paintEvent(QPaintEvent *) {
     p.drawLine(0,0,width(),height()); // Рисование линии*/
     p.end();
 }
+
+void FormWid::mousePressEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::LeftButton) {
+        mDrawMode = true;
+        mDrawBuffer.append(event->pos());
+        //mDrawBuffer.append(0);
+        event->accept();
+        //mDrawBuffer.clear();
+    }
+}
+
+void FormWid::mouseReleaseEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::LeftButton) {
+        mDrawMode = false;
+        mDrawBuffer.append(event->pos());
+        this->update();
+        event->accept();
+    }
+}
+
+void FormWid::mouseMoveEvent(QMouseEvent *event)
+{
+    if (!mDrawMode) return;
+    mDrawBuffer.append(event->pos());
+    this->update();
+    event->accept();
+}
+/*
+void PaintWidget::paintEvent(QPaintEvent *event)
+{
+    if (mDrawBuffer.size()<1) return;
+    QPen pen = QPen();
+    pen.setStyle(Qt::SolidLine);
+    pen.setWidth(5);
+    pen.setBrush(Qt::black);
+    pen.setCapStyle(Qt::RoundCap);
+    pen.setJoinStyle(Qt::RoundJoin);
+    QPainter painter(this);
+    painter.setPen(pen);
+    //painter.setCompositionMode(QPainter::CompositionMode_Clear);
+    QList<QPoint>::const_iterator it = mDrawBuffer.begin();
+    QPoint start = *it;
+    it++;
+    //QList<QPoint>::const_iterator it2 = mDrawBuffer.end();
+    //QPoint end = *it2;
+    painter.drawLine(start,start);
+
+    //it++;
+    //while (true)
+    //{
+        while(it != mDrawBuffer.end()) {
+            QPoint end = *it;
+            painter.drawLine(start,end);
+            start = end;
+            it++;
+        }
+        //mDrawBuffer.clear();
+        //it = mDrawBuffer.begin();
+    //}
+        --it;
+
+}
+*/

@@ -9,6 +9,10 @@
 #include <QScrollArea>
 #include <QPainter>
 #include <QBrush>
+#include <QtCore/QLine>
+#include <QtGui/QPainter>
+#include <QtGui/QMouseEvent>
+#include <QPen>
 
 namespace Ui {
 class FormWid;
@@ -24,6 +28,9 @@ public:
 
 protected:
     void paintEvent(QPaintEvent *);
+    void mousePressEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
 
 private:
     Ui::FormWid *ui;
@@ -31,6 +38,8 @@ private:
     QImage* inputImg;
     QLabel* imgDisplayLabel;
     QScrollArea* scrollArea;
+    QList<QPoint> mDrawBuffer;
+        bool mDrawMode;
 };
 
 #endif // FORMWID_H
