@@ -14,6 +14,8 @@
 #include <QtGui/QMouseEvent>
 #include <QPen>
 #include <QPushButton>
+#include "iostream"
+
 
 namespace Ui {
 class FormWid;
@@ -41,7 +43,6 @@ private:
 	QGridLayout* gridLayout;
 	QImage* inputImg;
 	QLabel* imgDisplayLabel;
-	//QScrollArea* scrollArea;
 	QPushButton* recognitionButton;
 	QList<QPoint> mDrawBuffer;
 	bool mDrawMode;
