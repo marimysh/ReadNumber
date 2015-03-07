@@ -1,5 +1,7 @@
 #include "formwid.h"
 #include "ui_formwid.h"
+#include "iostream"
+
 
 FormWid::FormWid(QWidget *parent) :
 	QWidget(parent),
@@ -7,10 +9,22 @@ FormWid::FormWid(QWidget *parent) :
 {
 	gridLayout = new QGridLayout();
 	inputImg = new QImage("ksh.png");
+	//QPainter p;
+	//p.begin(inputImg);
+	//p.drawLine( 0,0,10,10 );
+	//p.end();
 	imgDisplayLabel = new QLabel("");
 	imgDisplayLabel->setPixmap(QPixmap::fromImage(*inputImg));
 	imgDisplayLabel->adjustSize();
+	/*scrollArea = new QScrollArea();
+	scrollArea->setWidget(imgDisplayLabel);
+	scrollArea->setMinimumSize(50,50);
+	scrollArea->setMaximumSize(512,512);
+	gridLayout->addWidget(scrollArea,0,0);*/
 	gridLayout->addWidget (imgDisplayLabel, 0, 0);
+	//QRgb rgd = inputImg->pixel(1,1);
+	//QColor* col = new QColor(rgd);
+	//temp = col->black();
 
 	recognitionButton = new QPushButton("Recognition", this);
 	connect (recognitionButton, SIGNAL(released()), this,
@@ -53,13 +67,22 @@ void FormWid::paintEvent(QPaintEvent *) {
 	// ширина кисти в пикселях
 	penB.setWidth(4);
 	p.setPen(penB);
-
+	//на случай рисования линиями
+	//QPainter painter(this);
+	//painter.setPen(penB);
+	//painter.setCompositionMode(QPainter::CompositionMode_Clear);
 	QList<QPoint>::const_iterator it = mDrawBuffer.begin();
+	//QPoint start = *it;
+	//it++;
+	//QList<QPoint>::const_iterator it2 = mDrawBuffer.end();
+	//QPoint end = *it2;
+	//painter.drawLine(start,start);
 
 	while(it != mDrawBuffer.end()) {
 		QPoint end = *it;
 		end.setX(end.rx()-12);
 		end.setY(end.ry()-26);
+		//start = end;
 		p.drawPoint(end);
 		it++;
 	}
@@ -67,10 +90,23 @@ void FormWid::paintEvent(QPaintEvent *) {
 	imgDisplayLabel = new QLabel("");
 	imgDisplayLabel->setPixmap(QPixmap::fromImage(*inputImg));
 	imgDisplayLabel->adjustSize();
+	/*scrollArea = new QScrollArea();
+	scrollArea->setWidget(imgDisplayLabel);
+	scrollArea->setMinimumSize(50,50);
+	scrollArea->setMaximumSize(512,512);*/
+	//gridLayout->addWidget(scrollArea,0,0);
 	gridLayout->addWidget (imgDisplayLabel, 0, 0);
 	setLayout(gridLayout);
 	mDrawBuffer.clear();
 	p.end();
+
+	/*
+	//inputImg = new QImage("ksh.png");
+	QPainter p; // Создаём новый объект рисовальщика
+	p.begin(inputImg);
+	p.setPen(QPen(Qt::red,1,Qt::SolidLine)); // Настройки рисования
+	p.drawLine(0,0,width(),height()); // Рисование линии
+	p.end();*/
 }
 
 void FormWid::mousePressEvent(QMouseEvent *event)
@@ -104,3 +140,40 @@ void FormWid::pressRecognitionButton ()
 {
 	return;
 }
+
+/*
+void PaintWidget::paintEvent(QPaintEvent *event)
+{
+	if (mDrawBuffer.size()<1) return;
+	QPen pen = QPen();
+	pen.setStyle(Qt::SolidLine);
+	pen.setWidth(5);
+	pen.setBrush(Qt::black);
+	pen.setCapStyle(Qt::RoundCap);
+	pen.setJoinStyle(Qt::RoundJoin);
+	QPainter painter(this);
+	painter.setPen(pen);
+	//painter.setCompositionMode(QPainter::CompositionMode_Clear);
+	QList<QPoint>::const_iterator it = mDrawBuffer.begin();
+	QPoint start = *it;
+	it++;
+	//QList<QPoint>::const_iterator it2 = mDrawBuffer.end();
+	//QPoint end = *it2;
+	painter.drawLine(start,start);
+
+	//it++;
+	//while (true)
+	//{
+		while(it != mDrawBuffer.end()) {
+			QPoint end = *it;
+			painter.drawLine(start,end);
+			start = end;
+			it++;
+		}
+		//mDrawBuffer.clear();
+		//it = mDrawBuffer.begin();
+	//}
+		--it;
+
+}
+*/

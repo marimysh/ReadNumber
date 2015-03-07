@@ -13,10 +13,13 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
+        mainwindow.cpp \
+    qpaintwidget.cpp \
     formwid.cpp
 
-HEADERS  += \
+HEADERS  += mainwindow.h \
+    qpaintwidget.h \
     formwid.h
 
-FORMS    += \
+FORMS    += mainwindow.ui \
     formwid.ui
