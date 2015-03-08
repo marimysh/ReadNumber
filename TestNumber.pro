@@ -13,10 +13,12 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-    formwid.cpp
+    formwid.cpp \
+    symbol.cpp
 
 HEADERS  += \
-    formwid.h
+    formwid.h \
+    symbol.h
 
 FORMS    += \
     formwid.ui
