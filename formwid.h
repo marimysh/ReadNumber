@@ -18,6 +18,7 @@
 #include "symbol.h"
 #include <vector>
 
+using namespace std;
 
 namespace Ui {
 class FormWid;

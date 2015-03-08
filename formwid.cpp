@@ -91,7 +91,7 @@ void FormWid::pressRecognitionButton ()
 	if (pixels*(int)sizeof(QRgb) <= inputImg->byteCount())
 	{
 		QRgb *data = (QRgb *)inputImg->bits();
-		std::vector<int> imgPixels();
+		std::vector<int> imgPixels;
 		for (size_t i = 0; i < pixels; ++i)
 		{
 
@@ -99,10 +99,10 @@ void FormWid::pressRecognitionButton ()
 			//std::cout << data[i] << " ";
 			QColor greyCode = QColor(data[i]);
 			//std::cout << col.black () << " ";
-			imgPixels ().push_back (greyCode.black ());
+			imgPixels.push_back (greyCode.black ());
 		}
 		std::vector<int>::iterator begin;
-		begin = imgPixels ().begin ();
+		begin = imgPixels.begin ();
 		Symbol* symbolInp = new Symbol(begin, inputImg->width (), inputImg->height ());
 		std::cout << symbolInp->getwidth ();
 	}

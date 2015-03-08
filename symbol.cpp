@@ -11,7 +11,7 @@ Symbol::Symbol(std::vector<int>::iterator itListImg, int width, int height)
 	for (size_t i = 0; i < height; ++i)
 	{
 		std::vector<int> temp;
-		for (size_t j = 0; j < width; ++j)
+		for (size_t j = 0; j < width; ++j, ++itListImg)
 			temp.push_back (*itListImg);
 		this->Map.push_back (temp);
 	}
