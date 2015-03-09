@@ -3,12 +3,12 @@
 
 #include <iostream>
 #include <vector>
+#include <cmath>
 
 class Symbol
 {
 public:
 	//Характеристические функции
-	char whichSymbol();
 	void setMapGravity();
 	void getMapGravity(std::vector<std::vector<double> >* out);
 	double getGravityCentrx();
@@ -23,17 +23,20 @@ public:
 
 	void CreateMapGravity();
 	void CalculationGravityCentr();
+	void CalculationSecondMoment();
 
 	Symbol();
 
-	Symbol(std::vector<int>::iterator itListImg, int width, int height);
+	Symbol(std::vector<int>::iterator itListImg, unsigned int width,
+		   unsigned int height);
 	~Symbol();
 
 private:
-	double GravityCentrx, GravityCentry;			//координаты центра тяжести
-	std::vector<std::vector<int> > Map;				//карта символа
-	std::vector<std::vector<double> > MapGravity;	//карта тяжести
+	double gravityCentrX, gravityCentrY;			//координаты центра тяжести
+	std::vector<std::vector<int> > matrix;				//карта символа
+	std::vector<std::vector<double> > matrixGravity;	//карта тяжести
 	size_t width, height;
+	double secondMomentY, secondMomentX, secondMomentXY;
 };
 
 #endif // NUMBER_H

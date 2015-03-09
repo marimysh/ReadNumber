@@ -6,16 +6,30 @@ FormWid::FormWid(QWidget *parent) :
 	ui(new Ui::FormWid)
 {
 	gridLayout = new QGridLayout();
+	layoutButtons = new QVBoxLayout();
 	inputImg = new QImage("ksh.png");
 	imgDisplayLabel = new QLabel("");
+
 	imgDisplayLabel->setPixmap(QPixmap::fromImage(*inputImg));
 	imgDisplayLabel->adjustSize();
 	gridLayout->addWidget (imgDisplayLabel, 0, 0);
 
+	firstButton = new QPushButton("To start again", this);
+	connect (firstButton, SIGNAL(released()), this,
+			 SLOT(pressFirstButton()));
+	layoutButtons->addWidget (firstButton, 0);
+
 	recognitionButton = new QPushButton("Recognition", this);
 	connect (recognitionButton, SIGNAL(released()), this,
 			 SLOT(pressRecognitionButton()));
-	gridLayout->addWidget (recognitionButton, 0, 200);
+	layoutButtons->addWidget (recognitionButton, 1);
+
+	teachButton = new QPushButton("Teaching", this);
+	connect (teachButton, SIGNAL(released()), this,
+			 SLOT(pressTeacchButton()));
+	layoutButtons->addWidget (teachButton, 2);
+
+	gridLayout->addLayout (layoutButtons, 0, 2);
 	setLayout(gridLayout);
 	ui->setupUi(this);
 }
@@ -87,14 +101,13 @@ void FormWid::mouseMoveEvent(QMouseEvent *event)
 
 void FormWid::pressRecognitionButton ()
 {
-	int pixels = inputImg->width() * inputImg->height();
-	if (pixels*(int)sizeof(QRgb) <= inputImg->byteCount())
+	unsigned int pixels = inputImg->width() * inputImg->height();
+	if (pixels*(int)sizeof(QRgb) <= (unsigned int)inputImg->byteCount())
 	{
 		QRgb *data = (QRgb *)inputImg->bits();
 		std::vector<int> imgPixels;
 		for (size_t i = 0; i < pixels; ++i)
 		{
-
 			//data[i] = qRgba(val, val, val, qAlpha(data[i]));
 			//std::cout << data[i] << " ";
 			QColor greyCode = QColor(data[i]);
@@ -103,17 +116,35 @@ void FormWid::pressRecognitionButton ()
 		}
 		std::vector<int>::iterator begin;
 		begin = imgPixels.begin ();
-		Symbol* symbolInp = new Symbol(begin, inputImg->width (), inputImg->height ());
+		Symbol* symbolInp = new Symbol(begin, inputImg->width (),
+									   inputImg->height ());
 		symbolInp->CreateMapGravity ();
 		std::vector<std::vector<double> > gravCen;
 		symbolInp->getMapGravity (&gravCen);
-		for (int i = 0; i < gravCen.size (); ++i)
+		for (size_t i = 0; i < gravCen.size (); ++i)
 		{
-			for (int j = 0; j < gravCen.at (i).size(); ++j)
+			for (size_t j = 0; j < gravCen.at (i).size(); ++j)
 				std::cout << gravCen[i][j] << " ";
 			std::cout << std::endl;
 		}
 		symbolInp->CalculationGravityCentr ();
+		symbolInp->CalculationSecondMoment ();
 	}
+	return;
+}
+
+void FormWid::pressFirstButton ()
+{
+	inputImg = new QImage("ksh.png");
+	imgDisplayLabel = new QLabel("");
+	imgDisplayLabel->setPixmap(QPixmap::fromImage(*inputImg));
+	imgDisplayLabel->adjustSize();
+	gridLayout->addWidget (imgDisplayLabel, 0, 0);
+
+	return;
+}
+
+void FormWid::pressTeachButton ()
+{
 	return;
 }
