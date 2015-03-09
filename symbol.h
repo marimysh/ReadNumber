@@ -10,7 +10,7 @@ public:
 	//Характеристические функции
 	char whichSymbol();
 	void setMapGravity();
-	std::vector<std::vector<double> > getMapGravity();
+	void getMapGravity(std::vector<std::vector<double> >* out);
 	double getGravityCentrx();
 	double getGravityCentry();
 	int getwidth();
@@ -20,6 +20,9 @@ public:
 
 	//TODO: дозакончить фигуру и сделать такое еще раз
 	//void BoldSymbol();
+
+	void CreateMapGravity();
+	void CalculationGravityCentr();
 
 	Symbol();
 

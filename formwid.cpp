@@ -104,7 +104,16 @@ void FormWid::pressRecognitionButton ()
 		std::vector<int>::iterator begin;
 		begin = imgPixels.begin ();
 		Symbol* symbolInp = new Symbol(begin, inputImg->width (), inputImg->height ());
-		std::cout << symbolInp->getwidth ();
+		symbolInp->CreateMapGravity ();
+		std::vector<std::vector<double> > gravCen;
+		symbolInp->getMapGravity (&gravCen);
+		for (int i = 0; i < gravCen.size (); ++i)
+		{
+			for (int j = 0; j < gravCen.at (i).size(); ++j)
+				std::cout << gravCen[i][j] << " ";
+			std::cout << std::endl;
+		}
+		symbolInp->CalculationGravityCentr ();
 	}
 	return;
 }
