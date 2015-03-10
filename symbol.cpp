@@ -142,3 +142,28 @@ void Symbol::CalculationSecondMoment ()
 	std::cout << secondMomentX << " " << secondMomentY << " "
 			  << secondMomentXY << std::endl;
 }
+
+void Symbol::CalculationMomentAboutAxis(int alpha)
+//alpha - в градусах
+{
+	int countPoint = 0;
+	double_t sumDiam = 0;
+	double y0, x0;
+	y0 = this->height / 2;
+	x0 = this->width / 2;
+
+	for (size_t i = 0; i < this->matrix.size(); ++i)
+		for (size_t j = 0; j < this->matrix.at(i).size(); ++j)
+			if (matrix[i][j] > 0)
+			{
+				++countPoint;
+				double c = sqrt(pow((x0 - j), 2) + pow((y0 - i), 2));
+				double beta = acos(std::abs(x0 - j) /c);
+				double vega = beta - (alpha * M_PI / 180);
+				sumDiam += c * std::abs(sin(vega));
+			}
+	this->binMomentAboutAxis = sumDiam / countPoint;
+
+	std::cout << "alpha = " << alpha << " " << this->binMomentAboutAxis << std::endl;
+	return;
+}

@@ -24,6 +24,7 @@ public:
 	void CreateMapGravity();
 	void CalculationGravityCentr();
 	void CalculationSecondMoment();
+	void CalculationMomentAboutAxis(int alpha);
 
 	Symbol();
 
@@ -36,7 +37,10 @@ private:
 	std::vector<std::vector<int> > matrix;				//карта символа
 	std::vector<std::vector<double> > matrixGravity;	//карта тяжести
 	size_t width, height;
+	double mainAlpha;									//угол характеризующий момент относительно оси
+	double binMomentAboutAxis;							//в бинарном случае
 	double secondMomentY, secondMomentX, secondMomentXY;
+
 };
 
 #endif // NUMBER_H
