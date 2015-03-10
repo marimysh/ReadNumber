@@ -42,6 +42,7 @@ private slots:
 	void pressRecognitionButton();
 	void pressFirstButton();
 	void pressTeachButton();
+	void pressReadButton();
 
 private:
 	Ui::FormWid *ui;
@@ -52,6 +53,7 @@ private:
 	QPushButton* firstButton;
 	QPushButton* recognitionButton;
 	QPushButton* teachButton;
+	QPushButton* readButton;
 	QList<QPoint> mDrawBuffer;
 	bool mDrawMode;
 };

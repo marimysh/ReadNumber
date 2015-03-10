@@ -14,20 +14,25 @@ FormWid::FormWid(QWidget *parent) :
 	imgDisplayLabel->adjustSize();
 	gridLayout->addWidget (imgDisplayLabel, 0, 0);
 
+	readButton = new QPushButton("Read data", this);
+	connect (readButton, SIGNAL(released()), this,
+			 SLOT(pressReadButton()));
+	layoutButtons->addWidget (readButton, 0);
+
 	firstButton = new QPushButton("To start again", this);
 	connect (firstButton, SIGNAL(released()), this,
 			 SLOT(pressFirstButton()));
-	layoutButtons->addWidget (firstButton, 0);
+	layoutButtons->addWidget (firstButton, 1);
 
 	recognitionButton = new QPushButton("Recognition", this);
 	connect (recognitionButton, SIGNAL(released()), this,
 			 SLOT(pressRecognitionButton()));
-	layoutButtons->addWidget (recognitionButton, 1);
+	layoutButtons->addWidget (recognitionButton, 2);
 
 	teachButton = new QPushButton("Teaching", this);
 	connect (teachButton, SIGNAL(released()), this,
-			 SLOT(pressTeacchButton()));
-	layoutButtons->addWidget (teachButton, 2);
+			 SLOT(pressTeachButton()));
+	layoutButtons->addWidget (teachButton, 3);
 
 	gridLayout->addLayout (layoutButtons, 0, 2);
 	setLayout(gridLayout);
@@ -43,7 +48,6 @@ void FormWid::paintEvent(QPaintEvent *) {
 	QPainter p;
 	QImage tempImg = imgDisplayLabel->pixmap()->toImage();
 	inputImg = new QImage(tempImg);
-
 	if (mDrawBuffer.size()<1) return;
 
 	p.begin (inputImg);
@@ -70,6 +74,8 @@ void FormWid::paintEvent(QPaintEvent *) {
 	setLayout(gridLayout);
 	mDrawBuffer.clear();
 	p.end();
+	delete inputImg;
+	return;
 }
 
 void FormWid::mousePressEvent(QMouseEvent *event)
@@ -129,22 +135,29 @@ void FormWid::pressRecognitionButton ()
 		}
 		symbolInp->CalculationGravityCentr ();
 		symbolInp->CalculationSecondMoment ();
+		delete symbolInp;
 	}
 	return;
 }
 
 void FormWid::pressFirstButton ()
 {
+	delete imgDisplayLabel;
 	inputImg = new QImage("ksh.png");
 	imgDisplayLabel = new QLabel("");
 	imgDisplayLabel->setPixmap(QPixmap::fromImage(*inputImg));
 	imgDisplayLabel->adjustSize();
 	gridLayout->addWidget (imgDisplayLabel, 0, 0);
-
+	delete inputImg;
 	return;
 }
 
 void FormWid::pressTeachButton ()
+{
+	return;
+}
+
+void FormWid::pressReadButton ()
 {
 	return;
 }
