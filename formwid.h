@@ -5,6 +5,7 @@
 #include <QColor>
 #include <QImage>
 #include <QGridLayout>
+#include <QVBoxLayout>
 #include <QLabel>
 #include <QScrollArea>
 #include <QPainter>
@@ -14,6 +15,10 @@
 #include <QtGui/QMouseEvent>
 #include <QPen>
 #include <QPushButton>
+
+#include "iostream"
+#include "symbol.h"
+#include <vector>
 
 namespace Ui {
 class FormWid;
@@ -35,14 +40,20 @@ protected:
 
 private slots:
 	void pressRecognitionButton();
+	void pressFirstButton();
+	void pressTeachButton();
+	void pressReadButton();
 
 private:
 	Ui::FormWid *ui;
 	QGridLayout* gridLayout;
+	QVBoxLayout* layoutButtons;
 	QImage* inputImg;
 	QLabel* imgDisplayLabel;
-	//QScrollArea* scrollArea;
+	QPushButton* firstButton;
 	QPushButton* recognitionButton;
+	QPushButton* teachButton;
+	QPushButton* readButton;
 	QList<QPoint> mDrawBuffer;
 	bool mDrawMode;
 };
