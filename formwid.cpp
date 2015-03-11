@@ -114,10 +114,7 @@ void FormWid::pressRecognitionButton ()
 		std::vector<int> imgPixels;
 		for (size_t i = 0; i < pixels; ++i)
 		{
-			//data[i] = qRgba(val, val, val, qAlpha(data[i]));
-			//std::cout << data[i] << " ";
 			QColor greyCode = QColor(data[i]);
-			//std::cout << col.black () << " ";
 			imgPixels.push_back (greyCode.black ());
 		}
 		std::vector<int>::iterator begin;
@@ -135,6 +132,8 @@ void FormWid::pressRecognitionButton ()
 		}
 		symbolInp->CalculationGravityCentr ();
 		symbolInp->CalculationSecondMoment ();
+		symbolInp->CalculationMomentAboutAxis(0);
+		symbolInp->CalculationMomentAboutAxis(90);
 		delete symbolInp;
 	}
 	return;
