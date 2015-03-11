@@ -147,7 +147,7 @@ void Symbol::CalculationMomentAboutAxis(int alpha)
 //alpha - в градусах
 {
 	int countPoint = 0;
-	double_t sumDiam = 0;
+	unsigned long long int sumDiam = 0;
 	double y0, x0;
 	y0 = this->height / 2;
 	x0 = this->width / 2;
@@ -162,7 +162,7 @@ void Symbol::CalculationMomentAboutAxis(int alpha)
 				double vega = beta - (alpha * M_PI / 180);
 				sumDiam += c * std::abs(sin(vega));
 			}
-	this->binMomentAboutAxis = sumDiam / countPoint;
+	this->binMomentAboutAxis = (sumDiam + 0.0) / countPoint;
 
 	std::cout << "alpha = " << alpha << " " << this->binMomentAboutAxis << std::endl;
 	return;
