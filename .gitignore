@@ -218,4 +218,5 @@ pip-log.txt
 #Qt
 *Release
 *Debug
-*.user
+*.pro.user
+*.pro.user*
