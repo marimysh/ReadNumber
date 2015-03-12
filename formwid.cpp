@@ -5,6 +5,7 @@ FormWid::FormWid(QWidget *parent) :
 	QWidget(parent),
 	ui(new Ui::FormWid)
 {
+	this->setWindowTitle("Numbers");
 	gridLayout = new QGridLayout();
 	layoutButtons = new QVBoxLayout();
 	inputImg = new QImage("ksh.png");
@@ -107,35 +108,21 @@ void FormWid::mouseMoveEvent(QMouseEvent *event)
 
 void FormWid::pressRecognitionButton ()
 {
-	unsigned int pixels = inputImg->width() * inputImg->height();
-	if (pixels*(int)sizeof(QRgb) <= (unsigned int)inputImg->byteCount())
+	Symbol* symbolInp = ImgToSymbol(inputImg);
+	symbolInp->CreateMapGravity ();
+	std::vector<std::vector<double> > gravCen;
+	symbolInp->getMapGravity (&gravCen);
+	for (size_t i = 0; i < gravCen.size (); ++i)
 	{
-		QRgb *data = (QRgb *)inputImg->bits();
-		std::vector<int> imgPixels;
-		for (size_t i = 0; i < pixels; ++i)
-		{
-			QColor greyCode = QColor(data[i]);
-			imgPixels.push_back (greyCode.black ());
-		}
-		std::vector<int>::iterator begin;
-		begin = imgPixels.begin ();
-		Symbol* symbolInp = new Symbol(begin, inputImg->width (),
-									   inputImg->height ());
-		symbolInp->CreateMapGravity ();
-		std::vector<std::vector<double> > gravCen;
-		symbolInp->getMapGravity (&gravCen);
-		for (size_t i = 0; i < gravCen.size (); ++i)
-		{
-			for (size_t j = 0; j < gravCen.at (i).size(); ++j)
-				std::cout << gravCen[i][j] << " ";
-			std::cout << std::endl;
-		}
-		symbolInp->CalculationGravityCentr ();
-		symbolInp->CalculationSecondMoment ();
-		symbolInp->CalculationMomentAboutAxis(0);
-		symbolInp->CalculationMomentAboutAxis(90);
-		delete symbolInp;
+		for (size_t j = 0; j < gravCen.at (i).size(); ++j)
+			std::cout << gravCen[i][j] << " ";
+		std::cout << std::endl;
 	}
+	symbolInp->CalculationGravityCentr ();
+	symbolInp->CalculationSecondMoment ();
+	symbolInp->CalculationMomentAboutAxis(0);
+	symbolInp->CalculationMomentAboutAxis(90);
+	delete symbolInp;
 	return;
 }
 
@@ -153,10 +140,67 @@ void FormWid::pressFirstButton ()
 
 void FormWid::pressTeachButton ()
 {
+	Symbol* symbolInp = ImgToSymbol(inputImg);
+	symbolInp->CreateMapGravity ();
+	std::vector<std::vector<double> > gravCen;
+	symbolInp->getMapGravity (&gravCen);
+	for (size_t i = 0; i < gravCen.size (); ++i)
+	{
+		for (size_t j = 0; j < gravCen.at (i).size(); ++j)
+			std::cout << gravCen[i][j] << " ";
+		std::cout << std::endl;
+	}
+	symbolInp->CalculationGravityCentr ();
+	symbolInp->CalculationSecondMoment ();
+	for (size_t alpha = 0; alpha < 180; alpha += 4)
+		symbolInp->CalculationMomentAboutAxis(alpha);
+	PrintToFile(*symbolInp);
+	delete symbolInp;
 	return;
 }
 
 void FormWid::pressReadButton ()
 {
 	return;
+}
+
+void FormWid::PrintToFile(Symbol imageSymbol)
+{
+	std::ofstream outputFile;
+	outputFile.open("1.csv", std::ios::app);
+
+	std::vector<std::vector<double> > map;
+	imageSymbol.getMapGravity(&map);
+	for (size_t i = 0; i < map.size(); ++i)
+		for (size_t j = 0; j < map.at(i).size(); ++j)
+			outputFile << map.at(i).at(j) << ",";
+
+	outputFile << imageSymbol.getGravityCentrX() << ","
+			   << imageSymbol.getGravityCentrY() << ","
+			   << imageSymbol.getSecondMomentX() << ","
+			   << imageSymbol.getSecondMomentY() << ","
+			   << imageSymbol.getSecondMomentXY() << ",";
+
+	std::vector<double> moment;
+	imageSymbol.getBinMomentAboutAxis(&moment);
+	for (size_t i = 0; i < moment.size(); ++i)
+		outputFile << moment.at(i) << ",";
+	outputFile << std::endl;
+	outputFile.close();
+	return;
+}
+
+Symbol *FormWid::ImgToSymbol(QImage *img)
+{
+	unsigned int pixels = img->width() * img->height();
+	QRgb *data = (QRgb *)img->bits();
+	std::vector<int> imgPixels;
+	for (size_t i = 0; i < pixels; ++i)
+	{
+		QColor greyCode = QColor(data[i]);
+		imgPixels.push_back (greyCode.black ());
+	}
+	std::vector<int>::iterator begin;
+	begin = imgPixels.begin ();
+	return new Symbol(begin, img->width (), img->height ());
 }

@@ -17,6 +17,7 @@
 #include <QPushButton>
 
 #include "iostream"
+#include <fstream>
 #include "symbol.h"
 #include <vector>
 
@@ -45,6 +46,9 @@ private slots:
 	void pressReadButton();
 
 private:
+	void PrintToFile(Symbol imageSymbol);
+	Symbol* ImgToSymbol(QImage* img);
+
 	Ui::FormWid *ui;
 	QGridLayout* gridLayout;
 	QVBoxLayout* layoutButtons;

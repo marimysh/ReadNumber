@@ -24,6 +24,43 @@ Symbol::~Symbol()
 {
 
 }
+double Symbol::getGravityCentrX() const
+{
+	return gravityCentrX;
+}
+
+double Symbol::getGravityCentrY() const
+{
+	return gravityCentrY;
+}
+
+double Symbol::getSecondMomentX() const
+{
+	return secondMomentX;
+}
+
+double Symbol::getSecondMomentXY() const
+{
+	return secondMomentXY;
+}
+
+void Symbol::getBinMomentAboutAxis(std::vector<double> *out)
+{
+	out->assign (binMomentAboutAxis.begin (), binMomentAboutAxis.end ());
+	return;
+}
+
+void Symbol::setBinMomentAboutAxis(double moment)
+{
+	binMomentAboutAxis.push_back(moment);
+	return;
+}
+
+
+double Symbol::getSecondMomentY() const
+{
+	return secondMomentY;
+}
 
 int Symbol::getwidth ()
 {
@@ -162,8 +199,10 @@ void Symbol::CalculationMomentAboutAxis(int alpha)
 				double vega = beta - (alpha * M_PI / 180);
 				sumDiam += c * std::abs(sin(vega));
 			}
-	this->binMomentAboutAxis = (sumDiam + 0.0) / countPoint;
+	this->binMomentAboutAxis.push_back((sumDiam + 0.0) / countPoint);
 
-	std::cout << "alpha = " << alpha << " " << this->binMomentAboutAxis << std::endl;
+	std::cout << "alpha = " << alpha << " "
+			  << this->binMomentAboutAxis.at(
+					 this->binMomentAboutAxis.size() - 1) << std::endl;
 	return;
 }

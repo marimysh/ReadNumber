@@ -12,8 +12,6 @@ public:
 	//Характеристические функции
 	void setMapGravity();
 	void getMapGravity(std::vector<std::vector<double> >* out);
-	double getGravityCentrx();
-	double getGravityCentry();
 	int getwidth();
 
 	//TODO: возможность выбирать карту для каждого символа
@@ -27,6 +25,14 @@ public:
 	void CalculationSecondMoment();
 	void CalculationMomentAboutAxis(int alpha);
 
+	double getGravityCentrX() const;
+	double getGravityCentrY() const;
+	double getSecondMomentY() const;
+	double getSecondMomentX() const;
+	double getSecondMomentXY() const;
+	void getBinMomentAboutAxis(std::vector<double>* out);
+	void setBinMomentAboutAxis(double moment);
+
 	Symbol();
 
 	Symbol(std::vector<int>::iterator itListImg, unsigned int width,
@@ -38,8 +44,8 @@ private:
 	std::vector<std::vector<int> > matrix;				//карта символа
 	std::vector<std::vector<double> > matrixGravity;	//карта тяжести
 	size_t width, height;
-	double mainAlpha;									//угол характеризующий момент относительно оси
-	double binMomentAboutAxis;							//в бинарном случае
+	double mainAlpha;			//угол характеризующий момент относительно оси
+	std::vector<double> binMomentAboutAxis;				//в бинарном случае
 	double secondMomentY, secondMomentX, secondMomentXY;
 
 };
