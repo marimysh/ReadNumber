@@ -8,7 +8,7 @@ FormWid::FormWid(QWidget *parent) :
 	this->setWindowTitle("Numbers");
 	gridLayout = new QGridLayout();
 	layoutButtons = new QVBoxLayout();
-	inputImg = new QImage("ksh.png");
+	inputImg = new QImage("../ksh.png");
 	imgDisplayLabel = new QLabel("");
 
 	imgDisplayLabel->setPixmap(QPixmap::fromImage(*inputImg));
@@ -129,7 +129,7 @@ void FormWid::pressRecognitionButton ()
 void FormWid::pressFirstButton ()
 {
 	delete imgDisplayLabel;
-	inputImg = new QImage("ksh.png");
+	inputImg = new QImage("../ksh.png");
 	imgDisplayLabel = new QLabel("");
 	imgDisplayLabel->setPixmap(QPixmap::fromImage(*inputImg));
 	imgDisplayLabel->adjustSize();

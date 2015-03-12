@@ -47,7 +47,7 @@ private:
 	double mainAlpha;			//угол характеризующий момент относительно оси
 	std::vector<double> binMomentAboutAxis;				//в бинарном случае
 	double secondMomentY, secondMomentX, secondMomentXY;
-
+	double histogram [256];
 };
 
 #endif // NUMBER_H
