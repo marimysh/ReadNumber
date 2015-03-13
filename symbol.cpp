@@ -206,3 +206,64 @@ void Symbol::CalculationMomentAboutAxis(int alpha)
 					 this->binMomentAboutAxis.size() - 1) << std::endl;
 	return;
 }
+
+void Symbol::CalculationHistogram ()
+//Метод Оцу
+{
+	for (size_t i = 0; i < 256; ++i)
+		histogram[i] = 0;
+	for (size_t i = 0; i < matrix.size (); ++i)
+		for (size_t j = 0; j < matrix.at (i).size (); ++j)
+			++histogram[matrix.at (i).at (j)];
+	unsigned long long int sum = 0;
+	for (size_t i = 0; i < 256; ++i)
+		sum += histogram[i];
+	for (size_t i = 0; i < 256; ++i)
+		histogram[i] /= sum;
+	int porog = 0;
+	double_t minDisp = 1000;
+	for (size_t t = 0; t < 256; ++t)
+	{
+		double_t q1 = 0;
+		for (size_t i = 0; i <= t; ++i)
+			q1 += histogram[i];
+		double_t q2 = 0;
+		for (size_t i = t+1; i < 256; ++i)
+			q2 += histogram[i];
+		double_t u1 = 0;
+		for (size_t i = 0; i <= t; ++i)
+			u1 += histogram[i] * i / q1;
+		double_t u2 = 0;
+		for (size_t i = t+1; i < 256; ++i)
+			u2 += histogram[i] * i / q2;
+		double_t disp1 = 0;
+		for (size_t i = 0; i <= t; ++i)
+			disp1 += pow((i - u1), 2) * histogram[i] / q1;
+		double_t disp2 = 0;
+		for (size_t i = t+1; i < 256; ++i)
+			disp2 += pow((i - u2), 2) * histogram[i] / q2;
+		double_t disp = q1 * disp1 + q2 * disp2;
+		if (disp < minDisp)
+		{
+			minDisp = disp;
+			porog = t;
+		}
+	}
+	for (size_t i = 0; i < matrix.size(); ++i)
+	{
+		std::vector<bool> temp;
+		for (size_t j = 0; j < matrix.at (i).size(); ++j)
+			if (matrix.at (i). at(j) <= porog)
+				temp.push_back (false);
+			else
+				temp.push_back (true);
+		binMatrix.push_back (temp);
+	}
+	for (size_t i = 0; i < binMatrix.size (); ++i)
+	{
+		for (size_t j = 0; j < binMatrix.at (i). size(); ++j)
+			std::cout << binMatrix.at (i). at(j);
+		std::cout << std::endl;
+	}
+	return;
+}

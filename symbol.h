@@ -24,6 +24,7 @@ public:
 	void CalculationGravityCentr();
 	void CalculationSecondMoment();
 	void CalculationMomentAboutAxis(int alpha);
+	void CalculationHistogram();
 
 	double getGravityCentrX() const;
 	double getGravityCentrY() const;
@@ -34,7 +35,6 @@ public:
 	void setBinMomentAboutAxis(double moment);
 
 	Symbol();
-
 	Symbol(std::vector<int>::iterator itListImg, unsigned int width,
 		   unsigned int height);
 	~Symbol();
@@ -42,6 +42,7 @@ public:
 private:
 	double gravityCentrX, gravityCentrY;			//координаты центра тяжести
 	std::vector<std::vector<int> > matrix;				//карта символа
+	std::vector<std::vector<bool> > binMatrix;
 	std::vector<std::vector<double> > matrixGravity;	//карта тяжести
 	size_t width, height;
 	double mainAlpha;			//угол характеризующий момент относительно оси
