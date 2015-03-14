@@ -25,6 +25,7 @@ public:
 	void CalculationSecondMoment();
 	void CalculationMomentAboutAxis(int alpha);
 	void CalculationHistogram();
+	void AlignmentHistogramm();
 
 	double getGravityCentrX() const;
 	double getGravityCentrY() const;
@@ -33,6 +34,7 @@ public:
 	double getSecondMomentXY() const;
 	void getBinMomentAboutAxis(std::vector<double>* out);
 	void setBinMomentAboutAxis(double moment);
+
 
 	Symbol();
 	Symbol(std::vector<int>::iterator itListImg, unsigned int width,

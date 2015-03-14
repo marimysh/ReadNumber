@@ -141,6 +141,8 @@ void FormWid::pressFirstButton ()
 void FormWid::pressTeachButton ()
 {
 	Symbol* symbolInp = ImgToSymbol(inputImg);
+	symbolInp->CalculationHistogram ();
+	symbolInp->AlignmentHistogramm ();
 	symbolInp->CreateMapGravity ();
 	std::vector<std::vector<double> > gravCen;
 	symbolInp->getMapGravity (&gravCen);
@@ -154,7 +156,6 @@ void FormWid::pressTeachButton ()
 	symbolInp->CalculationSecondMoment ();
 	for (size_t alpha = 0; alpha < 180; alpha += 4)
 		symbolInp->CalculationMomentAboutAxis(alpha);
-	symbolInp->CalculationHistogram ();
 	PrintToFile(*symbolInp);
 	delete symbolInp;
 	return;

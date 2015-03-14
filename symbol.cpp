@@ -56,7 +56,6 @@ void Symbol::setBinMomentAboutAxis(double moment)
 	return;
 }
 
-
 double Symbol::getSecondMomentY() const
 {
 	return secondMomentY;
@@ -80,7 +79,7 @@ void Symbol::CreateMapGravity ()
 			for (size_t i = i7*height; i < (i7+1)*height; ++i)
 			{
 				for (size_t j = j7*width; j < (j7+1)*width; ++j)
-					weihgt += this->matrix[i][j];
+					weihgt += this->matrix.at (i).at (j);
 			}
 			temp.push_back (weihgt / (width * height));
 		}
@@ -138,8 +137,8 @@ void Symbol::CalculationSecondMoment ()
 	for (size_t i = 0; i < matrixGravity.size (); ++i)
 		for (size_t j = 0; j < matrixGravity.at (i).size(); ++j)
 		{
-			listY.at (i) += matrixGravity.at (i).at(j);
-			listX.at (j) += matrixGravity.at (i).at(j);
+			listY.at (i) += matrixGravity.at (i).at (j);
+			listX.at (j) += matrixGravity.at (i).at (j);
 		}
 	double sum = 0;
 	for (size_t i = 0; i < listY.size (); ++i)
@@ -189,9 +188,9 @@ void Symbol::CalculationMomentAboutAxis(int alpha)
 	y0 = this->height / 2;
 	x0 = this->width / 2;
 
-	for (size_t i = 0; i < this->matrix.size(); ++i)
-		for (size_t j = 0; j < this->matrix.at(i).size(); ++j)
-			if (matrix[i][j] > 0)
+	for (size_t i = 0; i < this->binMatrix.size(); ++i)
+		for (size_t j = 0; j < this->binMatrix.at(i).size(); ++j)
+			if (binMatrix.at (i).at (j) == true)
 			{
 				++countPoint;
 				double c = sqrt(pow((x0 - j), 2) + pow((y0 - i), 2));
@@ -202,7 +201,7 @@ void Symbol::CalculationMomentAboutAxis(int alpha)
 	this->binMomentAboutAxis.push_back((sumDiam + 0.0) / countPoint);
 
 	std::cout << "alpha = " << alpha << " "
-			  << this->binMomentAboutAxis.at(
+			  << this->binMomentAboutAxis.at (
 					 this->binMomentAboutAxis.size() - 1) << std::endl;
 	return;
 }
@@ -266,4 +265,20 @@ void Symbol::CalculationHistogram ()
 		std::cout << std::endl;
 	}
 	return;
+}
+
+void Symbol::AlignmentHistogramm ()
+{
+	for (size_t i = 1; i < 256; ++i)
+		histogram[i] += histogram[i-1];
+	for (size_t i = 0; i < matrix.size(); ++i)
+		for (size_t j = 0; j < matrix.at (i). size(); ++j)
+			matrix.at (i). at (j) = round (255 *
+										   histogram[matrix.at (i).at (j)]);
+	for (size_t i = 0; i < matrix.size(); ++i)
+	{
+		for (size_t j = 0; j < matrix.at (i). size(); ++j)
+			std::cout << matrix.at (i).at (j) << " ";
+		std::cout << std::endl;
+	}
 }
