@@ -35,12 +35,13 @@ public:
 	void getBinMomentAboutAxis(std::vector<double>* out);
 	void setBinMomentAboutAxis(double moment);
 	int getName() const;
+	double* getHistogram();
 
 	Symbol();
 	Symbol(std::vector<int>::iterator itListImg, unsigned int width,
 		   unsigned int height);
 	//TODO: изменить имя на string
-	Symbol(std::vector<int>::iterator itList, int name);
+	Symbol(std::vector<int>::iterator itList, int nam, int width, int height);
 	~Symbol();
 
 private:
@@ -50,8 +51,9 @@ private:
 	std::vector<std::vector<bool> > binMatrix;
 	std::vector<std::vector<double> > matrixGravity;	//карта тяжести
 	size_t width, height;
-	double mainAlpha;			//угол характеризующий момент относительно оси
+	//TODO: double mainAlpha;			//угол характеризующий момент относительно оси
 	std::vector<double> binMomentAboutAxis;				//в бинарном случае
+	//TODO: double minMoment;
 	double secondMomentY, secondMomentX, secondMomentXY;
 	double histogram [256];
 };

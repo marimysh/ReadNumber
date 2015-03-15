@@ -21,8 +21,11 @@ Symbol::Symbol(std::vector<int>::iterator itListImg, unsigned int width,
 	this->gravityCentrY = 0;
 }
 
-Symbol::Symbol(std::vector<int>::iterator itList, int name)
+Symbol::Symbol(std::vector<int>::iterator itList, int name, int width,
+			   int height)
 {
+	this->width = width;
+	this->height = height;
 	for (size_t i = 0; i < height; ++i)
 	{
 		std::vector<int> temp;
@@ -114,6 +117,11 @@ void Symbol::getMapGravity (std::vector<std::vector<double> >* out)
 	return;
 }
 
+double* Symbol::getHistogram ()
+{
+	return histogram;
+}
+
 void Symbol::CalculationGravityCentr ()
 {
 	std::vector<double> listY;
@@ -144,7 +152,7 @@ void Symbol::CalculationGravityCentr ()
 	for (size_t i = 0; i < listX.size (); ++i)
 		expectedValue += listX.at (i) * (i+1)/7;
 	this->gravityCentrX = expectedValue;
-	std::cout << gravityCentrX << " " << gravityCentrY << std::endl;
+	//std::cout << gravityCentrX << " " << gravityCentrY << std::endl;
 	return;
 }
 
@@ -195,8 +203,8 @@ void Symbol::CalculationSecondMoment ()
 	secondMoment /= sum;
 	this->secondMomentXY = secondMoment;
 
-	std::cout << secondMomentX << " " << secondMomentY << " "
-			  << secondMomentXY << std::endl;
+//	std::cout << secondMomentX << " " << secondMomentY << " "
+//			  << secondMomentXY << std::endl;
 }
 
 void Symbol::CalculationMomentAboutAxis(int alpha)
@@ -219,10 +227,9 @@ void Symbol::CalculationMomentAboutAxis(int alpha)
 				sumDiam += c * std::abs(sin(vega));
 			}
 	this->binMomentAboutAxis.push_back((sumDiam + 0.0) / countPoint);
-
-	std::cout << "alpha = " << alpha << " "
-			  << this->binMomentAboutAxis.at (
-					 this->binMomentAboutAxis.size() - 1) << std::endl;
+	//std::cout << "alpha = " << alpha << " "
+	//		  << this->binMomentAboutAxis.at (
+	//				 this->binMomentAboutAxis.size() - 1) << std::endl;
 	return;
 }
 
@@ -278,12 +285,12 @@ void Symbol::CalculationHistogram ()
 				temp.push_back (true);
 		binMatrix.push_back (temp);
 	}
-	for (size_t i = 0; i < binMatrix.size (); ++i)
+	/*for (size_t i = 0; i < binMatrix.size (); ++i)
 	{
 		for (size_t j = 0; j < binMatrix.at (i). size(); ++j)
 			std::cout << binMatrix.at (i). at(j);
 		std::cout << std::endl;
-	}
+	}*/
 	return;
 }
 
@@ -295,10 +302,10 @@ void Symbol::AlignmentHistogramm ()
 		for (size_t j = 0; j < matrix.at (i). size(); ++j)
 			matrix.at (i). at (j) = round (255 *
 										   histogram[matrix.at (i).at (j)]);
-	for (size_t i = 0; i < matrix.size(); ++i)
+	/*for (size_t i = 0; i < matrix.size(); ++i)
 	{
 		for (size_t j = 0; j < matrix.at (i). size(); ++j)
 			std::cout << matrix.at (i).at (j) << " ";
 		std::cout << std::endl;
-	}
+	}*/
 }

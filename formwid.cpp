@@ -156,7 +156,7 @@ void FormWid::pressTeachButton ()
 	symbolInp->CalculationSecondMoment ();
 	for (size_t alpha = 0; alpha < 180; alpha += 4)
 		symbolInp->CalculationMomentAboutAxis(alpha);
-	PrintToFile(*symbolInp);
+	PrintToFile(symbolInp);
 	delete symbolInp;
 	return;
 }
@@ -180,44 +180,70 @@ void FormWid::pressReadButton ()
 	std::ifstream inputFile;
 	inputFile.open ("../train.csv");
 
-	std::vector<int> listParametrs;
-
 	std::string st;
 	std::cout << "begin" << std::endl;
-	size_t j = 0;
-	while ((std::getline(inputFile, st)) && (j++ < 10))
+	std::getline(inputFile, st);
+	QTime timer;
+	timer.start ();
+	while (std::getline(inputFile, st))// && (j++ < 10))
 	{
+		std::vector<int> listParametrs;
 		SplittoInt (st, &listParametrs, ",");
-		for (size_t i = 0; i < listParametrs.size (); ++i)
-			std::cout << listParametrs.at (i) << " ";
-		std::cout << std::endl;
+		//for (size_t i = 0; i < listParametrs.size (); ++i)
+		//	std::cout << listParametrs.at (i) << " ";
+		//std::cout << std::endl;
 
-		Symbol newSymbol = Symbol(++listParametrs.begin (),
-								  listParametrs.at (0));
+		std::vector<int>::iterator begin = listParametrs.begin ();
+		begin++;
+		Symbol* symbolInp = new Symbol(begin, listParametrs.at (0), 28, 28);
+		symbolInp->CalculationHistogram ();
+		symbolInp->AlignmentHistogramm ();
+		symbolInp->CreateMapGravity ();
+		std::vector<std::vector<double> > gravCen;
+		symbolInp->getMapGravity (&gravCen);
+		//for (size_t i = 0; i < gravCen.size (); ++i)
+		//{
+		//	for (size_t j = 0; j < gravCen.at (i).size(); ++j)
+		//		std::cout << gravCen.at (i).at (j) << " ";
+		//	std::cout << std::endl;
+		//}
+		symbolInp->CalculationGravityCentr ();
+		symbolInp->CalculationSecondMoment ();
+		for (size_t alpha = 0; alpha < 180; alpha += 4)
+			symbolInp->CalculationMomentAboutAxis(alpha);
+		PrintToFile(symbolInp);
+		delete symbolInp;
 	}
+	std::cout << timer.elapsed ();
 	inputFile.close ();
 	return;
 }
 
-void FormWid::PrintToFile(Symbol imageSymbol)
+void FormWid::PrintToFile(Symbol *imageSymbol)
 {
 	std::ofstream outputFile;
-	outputFile.open("1.csv", std::ios::app);
+	outputFile.open("../factors.csv", std::ios::app);
+
+	outputFile << imageSymbol->getName () << ",";
+
+	double * histogram = imageSymbol->getHistogram ();
+	for (size_t i = 0; i < 256; ++i)
+		outputFile << *(histogram + i) << ",";
 
 	std::vector<std::vector<double> > map;
-	imageSymbol.getMapGravity(&map);
+	imageSymbol->getMapGravity(&map);
 	for (size_t i = 0; i < map.size(); ++i)
 		for (size_t j = 0; j < map.at(i).size(); ++j)
 			outputFile << map.at(i).at(j) << ",";
 
-	outputFile << imageSymbol.getGravityCentrX() << ","
-			   << imageSymbol.getGravityCentrY() << ","
-			   << imageSymbol.getSecondMomentX() << ","
-			   << imageSymbol.getSecondMomentY() << ","
-			   << imageSymbol.getSecondMomentXY() << ",";
+	outputFile << imageSymbol->getGravityCentrX() << ","
+			   << imageSymbol->getGravityCentrY() << ","
+			   << imageSymbol->getSecondMomentX() << ","
+			   << imageSymbol->getSecondMomentY() << ","
+			   << imageSymbol->getSecondMomentXY() << ",";
 
 	std::vector<double> moment;
-	imageSymbol.getBinMomentAboutAxis(&moment);
+	imageSymbol->getBinMomentAboutAxis(&moment);
 	for (size_t i = 0; i < moment.size(); ++i)
 		outputFile << moment.at(i) << ",";
 	outputFile << std::endl;

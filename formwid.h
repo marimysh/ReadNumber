@@ -16,6 +16,8 @@
 #include <QPen>
 #include <QPushButton>
 
+#include <QTime>
+
 #include <iostream>
 #include <fstream>
 #include "symbol.h"
@@ -48,7 +50,7 @@ private slots:
 	void pressReadButton();
 
 private:
-	void PrintToFile(Symbol imageSymbol);
+	void PrintToFile(Symbol* imageSymbol);
 	Symbol* ImgToSymbol(QImage* img);
 
 	Ui::FormWid *ui;
