@@ -34,14 +34,17 @@ public:
 	double getSecondMomentXY() const;
 	void getBinMomentAboutAxis(std::vector<double>* out);
 	void setBinMomentAboutAxis(double moment);
-
+	int getName() const;
 
 	Symbol();
 	Symbol(std::vector<int>::iterator itListImg, unsigned int width,
 		   unsigned int height);
+	//TODO: изменить имя на string
+	Symbol(std::vector<int>::iterator itList, int name);
 	~Symbol();
 
 private:
+	int name;
 	double gravityCentrX, gravityCentrY;			//координаты центра тяжести
 	std::vector<std::vector<int> > matrix;				//карта символа
 	std::vector<std::vector<bool> > binMatrix;

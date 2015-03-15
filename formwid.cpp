@@ -161,8 +161,41 @@ void FormWid::pressTeachButton ()
 	return;
 }
 
+void SplittoInt(std::string input, std::vector<int>* out,
+								  std::string separator)
+{
+	size_t pos = 0;
+	std::string token;
+	while ((pos = input.find(separator)) != std::string::npos) {
+		token = input.substr(0, pos);
+		out->push_back (atoi(token.c_str ()));
+		input.erase(0, pos + separator.length());
+	}
+	out->push_back (atof(token.c_str ()));
+	return;
+}
+
 void FormWid::pressReadButton ()
 {
+	std::ifstream inputFile;
+	inputFile.open ("../train.csv");
+
+	std::vector<int> listParametrs;
+
+	std::string st;
+	std::cout << "begin" << std::endl;
+	size_t j = 0;
+	while ((std::getline(inputFile, st)) && (j++ < 10))
+	{
+		SplittoInt (st, &listParametrs, ",");
+		for (size_t i = 0; i < listParametrs.size (); ++i)
+			std::cout << listParametrs.at (i) << " ";
+		std::cout << std::endl;
+
+		Symbol newSymbol = Symbol(++listParametrs.begin (),
+								  listParametrs.at (0));
+	}
+	inputFile.close ();
 	return;
 }
 

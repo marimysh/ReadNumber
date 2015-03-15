@@ -16,10 +16,12 @@
 #include <QPen>
 #include <QPushButton>
 
-#include "iostream"
+#include <iostream>
 #include <fstream>
 #include "symbol.h"
 #include <vector>
+#include "stdlib.h"
+#include <string>
 
 namespace Ui {
 class FormWid;

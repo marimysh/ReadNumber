@@ -16,6 +16,21 @@ Symbol::Symbol(std::vector<int>::iterator itListImg, unsigned int width,
 			temp.push_back (*itListImg);
 		this->matrix.push_back (temp);
 	}
+	this->name = -1;
+	this->gravityCentrX = 0;
+	this->gravityCentrY = 0;
+}
+
+Symbol::Symbol(std::vector<int>::iterator itList, int name)
+{
+	for (size_t i = 0; i < height; ++i)
+	{
+		std::vector<int> temp;
+		for (size_t j = 0; j < width; ++j, ++itList)
+			temp.push_back (*itList);
+		this->matrix.push_back (temp);
+	}
+	this->name = name;
 	this->gravityCentrX = 0;
 	this->gravityCentrY = 0;
 }
@@ -24,6 +39,11 @@ Symbol::~Symbol()
 {
 
 }
+int Symbol::getName() const
+{
+	return name;
+}
+
 double Symbol::getGravityCentrX() const
 {
 	return gravityCentrX;
