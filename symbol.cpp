@@ -285,12 +285,12 @@ void Symbol::CalculationHistogram ()
 				temp.push_back (true);
 		binMatrix.push_back (temp);
 	}
-	/*for (size_t i = 0; i < binMatrix.size (); ++i)
+	for (size_t i = 0; i < binMatrix.size (); ++i)
 	{
 		for (size_t j = 0; j < binMatrix.at (i). size(); ++j)
 			std::cout << binMatrix.at (i). at(j);
 		std::cout << std::endl;
-	}*/
+	}
 	return;
 }
 

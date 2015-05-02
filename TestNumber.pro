@@ -11,14 +11,15 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = TestNumber
 TEMPLATE = app
 
-
 SOURCES += main.cpp\
     formwid.cpp \
-    symbol.cpp
+    symbol.cpp \
+    mashinelearn.cpp
 
 HEADERS  += \
     formwid.h \
-    symbol.h
+    symbol.h \
+    mashinelearn.h
 
 FORMS    += \
     formwid.ui

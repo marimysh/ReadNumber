@@ -156,7 +156,7 @@ void FormWid::pressTeachButton ()
 	symbolInp->CalculationSecondMoment ();
 	for (size_t alpha = 0; alpha < 180; alpha += 4)
 		symbolInp->CalculationMomentAboutAxis(alpha);
-	PrintToFile(symbolInp);
+	//PrintToFile(symbolInp);
 	delete symbolInp;
 	return;
 }
