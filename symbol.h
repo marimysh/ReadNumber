@@ -27,6 +27,8 @@ public:
 	void CalculationHistogram();
 	void AlignmentHistogramm();
 
+	std::vector<std::vector<int> > getMatrix() const;
+	std::vector<std::vector<bool> > getBinMatrix() const;
 	double getGravityCentrX() const;
 	double getGravityCentrY() const;
 	double getSecondMomentY() const;

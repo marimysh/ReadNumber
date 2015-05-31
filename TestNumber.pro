@@ -14,12 +14,12 @@ TEMPLATE = app
 SOURCES += main.cpp\
     formwid.cpp \
     symbol.cpp \
-    mashinelearn.cpp
+    machinelearning.cpp
 
 HEADERS  += \
     formwid.h \
     symbol.h \
-    mashinelearn.h
+    machinelearning.h
 
 FORMS    += \
     formwid.ui

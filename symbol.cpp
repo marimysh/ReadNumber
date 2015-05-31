@@ -42,6 +42,17 @@ Symbol::~Symbol()
 {
 
 }
+std::vector<std::vector<bool> > Symbol::getBinMatrix() const
+{
+	return binMatrix;
+}
+
+std::vector<std::vector<int> > Symbol::getMatrix() const
+{
+	return matrix;
+}
+
+
 int Symbol::getName() const
 {
 	return name;
@@ -285,12 +296,12 @@ void Symbol::CalculationHistogram ()
 				temp.push_back (true);
 		binMatrix.push_back (temp);
 	}
-	for (size_t i = 0; i < binMatrix.size (); ++i)
+	/*for (size_t i = 0; i < binMatrix.size (); ++i)
 	{
 		for (size_t j = 0; j < binMatrix.at (i). size(); ++j)
 			std::cout << binMatrix.at (i). at(j);
 		std::cout << std::endl;
-	}
+	}*/
 	return;
 }
 

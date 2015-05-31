@@ -185,8 +185,10 @@ void FormWid::pressReadButton ()
 	std::getline(inputFile, st);
 	QTime timer;
 	timer.start ();
-	while (std::getline(inputFile, st))// && (j++ < 10))
+	int q = 0;
+	while (std::getline(inputFile, st))
 	{
+		std::cout << q++ << std::endl;
 		std::vector<int> listParametrs;
 		SplittoInt (st, &listParametrs, ",");
 		//for (size_t i = 0; i < listParametrs.size (); ++i)
@@ -222,9 +224,20 @@ void FormWid::pressReadButton ()
 void FormWid::PrintToFile(Symbol *imageSymbol)
 {
 	std::ofstream outputFile;
-	outputFile.open("../factors.csv", std::ios::app);
+	outputFile.open("../factors_.csv", std::ios::app);
 
 	outputFile << imageSymbol->getName () << ",";
+/*
+	std::vector<std::vector<int> > matrix = imageSymbol->getMatrix();
+
+	for (size_t i = 0; i < 28; ++i)
+		for (size_t j = 0; j < 28; ++j)
+			outputFile << matrix.at(i).at(j) << ",";
+
+	std::vector<std::vector<bool> > hist = imageSymbol->getBinMatrix();
+	for (size_t i = 0; i < 28; ++i)
+		for (size_t j = 0; j < 28; ++j)
+			outputFile << hist.at(i).at(j) << ",";
 
 	double * histogram = imageSymbol->getHistogram ();
 	for (size_t i = 0; i < 256; ++i)
@@ -235,7 +248,7 @@ void FormWid::PrintToFile(Symbol *imageSymbol)
 	for (size_t i = 0; i < map.size(); ++i)
 		for (size_t j = 0; j < map.at(i).size(); ++j)
 			outputFile << map.at(i).at(j) << ",";
-
+*/
 	outputFile << imageSymbol->getGravityCentrX() << ","
 			   << imageSymbol->getGravityCentrY() << ","
 			   << imageSymbol->getSecondMomentX() << ","
