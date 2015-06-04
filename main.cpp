@@ -36,7 +36,7 @@ void SplittoDouble(std::string input, std::vector<double>* out,
 void PrintToFile(Symbol *imageSymbol)
 {
 	std::ofstream outputFile;
-	outputFile.open("../factors_GC_GM.csv", std::ios::app);
+	outputFile.open("../factors_GC_GM_3.csv", std::ios::app);
 
 	outputFile << imageSymbol->getName () << ",";
 
@@ -105,8 +105,8 @@ void ReadData ()
 		//symbolInp->AlignmentHistogramm ();
 
 		symbolInp->CreateMapGravity ();
-		std::vector<std::vector<double> > gravCen;
-		symbolInp->getMapGravity (&gravCen);
+		//std::vector<std::vector<double> > gravCen;
+		//symbolInp->getMapGravity (&gravCen);
 		//for (size_t i = 0; i < gravCen.size (); ++i)
 		//{
 		//	for (size_t j = 0; j < gravCen.at (i).size(); ++j)
@@ -129,13 +129,13 @@ void ReadData ()
 void LearnLG ()
 {
 	std::ifstream inputFile;
-	inputFile.open ("../factors_GC_GM.csv");
+	inputFile.open ("../factors_bin_map_GC_GM.csv");
 
 	std::string st;
 	std::cout << "begin" << std::endl;
 
 	std::ofstream outputFile;
-	outputFile.open("../weight_GC_GM.csv", std::ios::app);
+	outputFile.open("../weight_bin_map_GC_GM.csv", std::ios::app);
 	std::vector<double> listParametrs;
 	QTime timer;
 	timer.start ();
@@ -158,7 +158,7 @@ void LearnLG ()
 	std::vector<std::vector<double> > weightres = LG->getWeight();
 	for (size_t j = 0; j < 10; ++j)
 	{
-		outputFile << j << ",";
+		//outputFile << j << ",";
 		for (size_t i = 0; i < weightres.at(0).size(); ++i)
 			outputFile << weightres.at(j).at(i) << ",";
 		outputFile << std::endl;
@@ -189,7 +189,7 @@ void CheckLearning ()
 		weight.push_back(listParametrs);
 		listParametrs.clear();
 	}
-
+	std::cout << weight.at(0).size() << std::endl;
 	inputFile.close();
 
 	inputFile.open ("../train.csv");
@@ -217,7 +217,7 @@ void CheckLearning ()
 		symbolInp->CreateMapGravity ();
 
 		symbolInp->CalculationGravityCentr ();
-		symbolInp->CalculationSecondMoment ();
+		//symbolInp->CalculationSecondMoment ();
 
 		double myints[] = {symbolInp->getGravityCentrX(),
 						   symbolInp->getGravityCentrY(),
@@ -227,7 +227,7 @@ void CheckLearning ()
 
 		std::vector<double> listGC (myints,
 									myints + sizeof(myints) / sizeof(double) );
-		double sum = 0, max = 0;
+		long long sum = 0, max = -5;
 		int maxnumber = -1;
 
 		std::cout << symbolInp->getName() << " ";
@@ -236,11 +236,13 @@ void CheckLearning ()
 			sum = 0;
 			for (size_t i = 0; i < listGC.size(); ++i)
 				sum += weight.at(j).at(i) * listGC.at(i);
-			std::cout << j << " " << sum;
-			if (sum > max)
+			sum += 5;
+			//std::cout << weight.at(j).at(0) << " ";
+			std::cout << 1/(1 + exp(-sum)) << " ";
+			if (1/(1 + exp(-sum)) > max)
 			{
 				maxnumber = j;
-				max = sum;
+				max = 1/(1 + exp(-sum));
 			}
 		}
 		std::cout << std::endl;
@@ -299,8 +301,8 @@ int main(int argc, char *argv[])
 	//w->show();
 	//ReadData();
 	//Kost();
-	//LearnLG();
-	CheckLearning();
+	LearnLG();
+	//CheckLearning();
 	return 0;
 	//return a.exec();
 }

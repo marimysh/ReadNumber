@@ -2,7 +2,7 @@
 
 MachineLearning::MachineLearning(int size)
 {
-	this->weight.resize (10, std::vector<double> (size, 0.1));
+	this->weight.resize (10, std::vector<long long int> (size, 0.00001));
 	std::cout << weight.size() << " " << weight.at(0).size() << std::endl;
 /*	for (size_t i = 0; i < 10; ++i)
 	{
@@ -28,7 +28,7 @@ MachineLearning::~MachineLearning()
 }
 
 
-std::vector<std::vector<double> > MachineLearning::getWeight() const
+std::vector<std::vector<long long int> > MachineLearning::getWeight() const
 {
 	return weight;
 }
@@ -59,7 +59,7 @@ double MachineLearning::Pmiss (bool y, std::vector<double>::iterator input,
 							   std::vector<double>::iterator inputend,
 							   int number)
 {
-	double sum = 5;
+	long long int sum = 5;
 	for (size_t i = 0; input < inputend; ++i, ++input) {
 //		std::cout << *input << " " << this->weight.at(number).at(i) << std::endl;
 		sum += *input *	this->weight.at(number).at(i);
@@ -89,9 +89,9 @@ void MachineLearning::LogicRegression(std::vector<double>::iterator input,
 				for (size_t i = 0; inp < inputend; ++i, ++inp)
 					this->weight.at(j).at(i) += P * (-1) * (*inp);
 			}
-			/*inp = input;
+			inp = input;
 			for (size_t i = 0; inp < inputend; ++i, ++inp)
-				std::cout << this->weight.at(j).at(i) << " ";*/
+				std::cout << this->weight.at(j).at(i) << " ";
 			std::cout << "P " << P << std::endl;
 		}
 		return;
