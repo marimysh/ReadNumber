@@ -1,4 +1,5 @@
 #include "machinelearning.h"
+#include <numeric>
 
 MachineLearning::MachineLearning(int size)
 {
@@ -59,11 +60,12 @@ double MachineLearning::Pmiss (bool y, std::vector<double>::iterator input,
 							   std::vector<double>::iterator inputend,
 							   int number)
 {
-	long long int sum = 5;
-	for (size_t i = 0; input < inputend; ++i, ++input) {
+	long long int sum = 0;
+/*	for (size_t i = 0; input < inputend; ++i, ++input) {
 //		std::cout << *input << " " << this->weight.at(number).at(i) << std::endl;
 		sum += *input *	this->weight.at(number).at(i);
-	}
+	}*/
+	sum = std::inner_product(input, inputend, this->weigt.at(number).begin(), 0.0);
 	std::cout << "S " << sum << " ";
 	if (y)
 		return (exp(-sum) / (1 + exp(-sum)));
