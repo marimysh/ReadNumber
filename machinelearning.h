@@ -8,7 +8,7 @@
 class MachineLearning
 {
 private:
-	std::vector<std::vector<long long int> > weight;
+	std::vector<std::vector<double> > weight;
 	double target;
 	double eta;			//magic
 
@@ -25,7 +25,7 @@ public:
 						 std::vector<double>::iterator inputend);
 	~MachineLearning();
 
-	std::vector<std::vector<long long> > getWeight() const;
+	std::vector<std::vector<double> > getWeight() const;
 };
 
 #endif // MACHINELEARNING_H

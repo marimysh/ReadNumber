@@ -3,36 +3,10 @@
 #include "formwid.h"
 #include "symbol.h"
 #include "machinelearning.h"
+#include "tinstance.h"
+#include <string.h>
 
-
-void SplittoInt2(std::string input, std::vector<int>* out,
-								  std::string separator)
-{
-	size_t pos = 0;
-	std::string token;
-	while ((pos = input.find(separator)) != std::string::npos) {
-		token = input.substr(0, pos);
-		out->push_back (atoi(token.c_str ()));
-		input.erase(0, pos + separator.length());
-	}
-	out->push_back (atof(token.c_str ()));
-	return;
-}
-
-void SplittoDouble(std::string input, std::vector<double>* out,
-								  std::string separator)
-{
-	size_t pos = 0;
-	std::string token;
-	while ((pos = input.find(separator)) != std::string::npos) {
-		token = input.substr(0, pos);
-		out->push_back (atof(token.c_str ()));
-		input.erase(0, pos + separator.length());
-	}
-	out->push_back (atof(token.c_str ()));
-	return;
-}
-
+/*
 void PrintToFile(Symbol *imageSymbol)
 {
 	std::ofstream outputFile;
@@ -61,7 +35,7 @@ void PrintToFile(Symbol *imageSymbol)
 		for (size_t j = 0; j < map.at(i).size(); ++j)
 			outputFile << map.at(i).at(j) << ",";
 */
-	outputFile << imageSymbol->getGravityCentrX() << ","
+/*	outputFile << imageSymbol->getGravityCentrX() << ","
 			   << imageSymbol->getGravityCentrY() << ","
 			   << imageSymbol->getSecondMomentX() << ","
 			   << imageSymbol->getSecondMomentY() << ","
@@ -71,7 +45,7 @@ void PrintToFile(Symbol *imageSymbol)
 	imageSymbol->getBinMomentAboutAxis(&moment);
 	for (size_t i = 0; i < moment.size(); ++i)
 		outputFile << moment.at(i) << ",";
-*/
+
 	outputFile << std::endl;
 	outputFile.close();
 	return;
@@ -146,7 +120,7 @@ void LearnLG ()
 	MachineLearning* LG = new MachineLearning(listParametrs.size() - 1);
 	LG->LogicRegression(listParametrs.begin(), listParametrs.end());
 
-	while (std::getline(inputFile, st) && (q < 1000))
+	while (std::getline(inputFile, st) && (q < 10))
 	{
 		std::cout << q++ << std::endl;
 		listParametrs.clear();
@@ -291,7 +265,7 @@ void Kost ()
 	}
 	return;
 }
-
+*/
 int main(int argc, char *argv[])
 {
 	//QApplication a(argc, argv);
@@ -301,8 +275,11 @@ int main(int argc, char *argv[])
 	//w->show();
 	//ReadData();
 	//Kost();
-	LearnLG();
+	//LearnLG();
 	//CheckLearning();
+
+
+	//TInstance TI;
 	return 0;
 	//return a.exec();
 }

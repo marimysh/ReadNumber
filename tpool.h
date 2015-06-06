@@ -4,12 +4,14 @@
 #include <iostream>
 #include <vector>
 #include "tinstance.h"
+#include <fstream>
 
 class TPool
 {
 public:
 	std::vector <TInstance> Pool;
-	static TPool ReadLearn (const std::string &path);
+	void ReadLearn (const std::string &path);
+	void ReadTest (const std::string &path);
 	TPool();
 	~TPool();
 };

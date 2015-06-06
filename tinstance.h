@@ -2,18 +2,33 @@
 #define TINSTANCE_H
 
 #include <iostream>
-#include "string.h"
+#include <string>
+#include <vector>
+#include <cmath>
+#include "math.h"
+#include "stdlib.h"
+
+
 
 class TInstance
 {
 private:
-	int Goal;
-	std::vector <double> features;
+	int goal;
+
+	void SplittoDouble(std::string input, std::vector<double>* out,
+									  std::string separator);
+	void SplittoInt2(std::string input, std::vector<int>* out,
+									  std::string separator);
+
 public:
-	static TInstance FromString(const std::string st);
-	std::string ToString() const;
+	std::vector <double> features;
+
+	void FromString(const std::string st);
+	void FromString(int number, const std::string st);
+	std::string ToString();
 	TInstance();
 	~TInstance();
+	int getGoal() const;
 };
 
 #endif // TINSTANCE_H
