@@ -9,7 +9,7 @@ class TLeaner
 public:
 	TLeaner();
 	~TLeaner();
-	virtual TLinerModel Learn (const TPool &pool, int number = -1);
+	virtual TLinerModel Learn (const TPool &pool, int number = -1) = 0;
 };
 
 #endif // TLEANER_H

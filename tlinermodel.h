@@ -7,13 +7,13 @@
 class TLinerModel
 {
 private:
-	std::vector <double> coefficients;
 	double threshold;
 
 public:
+	std::vector <double> coefficients;
 	double Prediction (const TInstance &inst) const;
 	bool IsPositive (const TInstance &inst) const;
-	TLinerModel();
+	TLinerModel(int size);
 	~TLinerModel();
 };
 

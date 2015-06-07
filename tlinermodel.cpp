@@ -11,9 +11,9 @@ bool TLinerModel::IsPositive(const TInstance &inst) const
 	return Prediction(inst) > 0;
 }
 
-TLinerModel::TLinerModel()
+TLinerModel::TLinerModel(int size)
 {
-
+	this->coefficients.assign(size, 1);
 }
 
 TLinerModel::~TLinerModel()

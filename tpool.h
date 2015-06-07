@@ -10,8 +10,8 @@ class TPool
 {
 public:
 	std::vector <TInstance> Pool;
-	void ReadLearn (const std::string &path);
-	void ReadTest (const std::string &path);
+	void ReadLearn (const std::string &path, int count);
+	void ReadTest (const std::string &path, int countBegin, int count);
 	TPool();
 	~TPool();
 };

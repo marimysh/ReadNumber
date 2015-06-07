@@ -21,7 +21,8 @@ SOURCES += main.cpp\
 	tmetrics.cpp \
     tpool.cpp \
     tlinermodel.cpp \
-    tleaner.cpp
+    tleaner.cpp \
+    linerregress.cpp
 
 HEADERS  += \
     formwid.h \
@@ -31,7 +32,8 @@ HEADERS  += \
 	tmetrics.h \
     tpool.h \
     tlinermodel.h \
-    tleaner.h
+    tleaner.h \
+    linerregress.h
 
 FORMS    += \
     formwid.ui
