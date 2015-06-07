@@ -13,7 +13,7 @@ bool TLinerModel::IsPositive(const TInstance &inst) const
 
 TLinerModel::TLinerModel(int size)
 {
-	this->coefficients.assign(size, 1);
+	this->coefficients.assign(size, 0.0);
 }
 
 TLinerModel::~TLinerModel()

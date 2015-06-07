@@ -21,8 +21,9 @@ public:
 	double getF1() const;
 	void setF1(double value);
 
-	void CalcMetrics (const TLinerModel LM, const TPool &pool);
-	void Test (TLeaner *L, const TPool &learnPool, const TPool &testPool);
+	void CalcMetrics (const TLinerModel LM, const TPool &pool, int number);
+	void Test (TLeaner *L, const TPool &learnPool, const TPool &testPool,
+			   int number);
 };
 
 #endif // TMETRICS_H

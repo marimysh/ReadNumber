@@ -29,7 +29,7 @@ void TPool::ReadTest(const std::string &path, int countBegin, int count = 0)
 	while (std::getline(inputFile, st) && (count-- > 0))
 	{
 		TInstance simple;
-		simple.FromString(st);
+		simple.FromString(std::atoi(st.substr(0,1).c_str()), st.substr(2));
 		this->Pool.push_back(simple);
 	}
 	inputFile.close();

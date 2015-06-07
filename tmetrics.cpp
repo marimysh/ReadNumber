@@ -31,16 +31,20 @@ void Tmetrics::setF1(double value)
 	F1 = value;
 }
 
-void Tmetrics::CalcMetrics(const TLinerModel LM, const TPool &pool)
+void Tmetrics::CalcMetrics(const TLinerModel LM, const TPool &pool, int number)
 {
-	int TP = 0,
-		FP = 0,
-		FN = 0;
+	double TP = 1,
+		FP = 1,
+		FN = 1;
 	for (size_t iterInstance = 0; iterInstance < pool.Pool.size();
 		 ++iterInstance)
 	{
 		bool pred = LM.IsPositive(pool.Pool.at(iterInstance));
-		bool target = pool.Pool.at(iterInstance).getGoal();
+		bool target;
+		if (pool.Pool.at(iterInstance).getGoal() == number)
+			target = true;
+		else
+			target = false;
 		TP += target & pred;
 		FP += !target & pred;
 		FN += target & !pred;
@@ -51,9 +55,9 @@ void Tmetrics::CalcMetrics(const TLinerModel LM, const TPool &pool)
 }
 
 void Tmetrics::Test(TLeaner *L, const TPool &learnPool,
-						const TPool &testPool)
+						const TPool &testPool, int number)
 {
-	CalcMetrics(L->Learn(learnPool), testPool);
+	CalcMetrics(L->Learn(learnPool), testPool, number);
 }
 
 Tmetrics::Tmetrics()

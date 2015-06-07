@@ -2,7 +2,7 @@
 
 double LinerRegress::sigma(double P, int truly)
 {
-	return 1 / (1 + exp(-truly * P));
+	return 1 / (1 + exp(truly * P));
 }
 
 TLinerModel LinerRegress::Learn(const TPool &pool, int number)
@@ -17,10 +17,12 @@ TLinerModel LinerRegress::Learn(const TPool &pool, int number)
 		else
 			truly = -1;
 		double P = sigma(sum, truly);
+//		std::cout << i << " P " << P << std::endl;
 		for (size_t j = 0; j < res.coefficients.size(); ++j)
 			res.coefficients[j] += P * truly *
 					pool.Pool.at(i).features.at(j);
 	}
+
 	return res;
 }
 

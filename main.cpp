@@ -60,23 +60,19 @@ int main(int argc, char *argv[])
 	TPool learnp;
 	learnp.ReadLearn(filePath, 1000);
 	TPool testp;
-	testp.ReadTest(filePath, 1000, 2000);
+	testp.ReadTest(filePath, 1000, 5000);
 
 	std::vector<TLinerModel> weight;
 	for (size_t i = 0; i < 10; ++i)
-		weight.push_back(LinerRegress::Learn(learnp, i));
-
-	for (int i = 0; i < 10; ++i)
 	{
-		for (int j = 0; j < weight.size(); ++j)
-			std::cout << weight.at(i).coefficients.at(j) << " ";
-		std::cout << std::endl;
+		TLinerModel LG = LinerRegress::Learn(learnp, i);
+		weight.push_back(LG);
 	}
 
 	for (size_t i = 0; i < 10; ++i)
 	{
 		Tmetrics metricsLR;
-		metricsLR.CalcMetrics(weight.at(i), testp);
+		metricsLR.CalcMetrics(weight.at(i), testp, i);
 		std::cout << i << ": ";
 		std::cout << metricsLR.getPresicion() << " " <<
 					 metricsLR.getRecall() << " " <<
