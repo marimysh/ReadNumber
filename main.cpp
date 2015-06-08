@@ -132,15 +132,15 @@ int main(int argc, char *argv[])
 	//ReadData();
 
 
-	std::string filePath = "../factors_without_matrix.csv";
-	int razm[5] = {500, 1000, 5000, 10000, 20000};
-	for (size_t sampleSize = 0; sampleSize < 5; ++sampleSize)
+	std::string filePath = "../factors_matrix.csv";
+	int razm[] = {100, 200, 400, 500, 700, 1000, 2000, 3000, 4000, 5000, 7000, 10000, 15000, 20000};
+	for (size_t sampleSize = 0; sampleSize < 14; ++sampleSize)
 	{
-		std::cout << "L = " << razm[sampleSize] << " T = 20000" << std::endl;
+		std::cout << "L = " << razm[sampleSize] << " T = " << (42000 - razm[sampleSize]) << std::endl;
 		TPool learnp;
 		learnp.ReadLearn(filePath, razm[sampleSize]);
 		TPool testp;
-		testp.ReadTest(filePath, razm[sampleSize], 20000);
+		testp.ReadTest(filePath, razm[sampleSize], 42000 - razm[sampleSize] - 1000);
 
 		std::vector<TLinerModel> weight;
 		for (size_t i = 0; i < 10; ++i)
