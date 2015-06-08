@@ -49,9 +49,12 @@ void Tmetrics::CalcMetrics(const TLinerModel LM, const TPool &pool, int number)
 		FP += !target & pred;
 		FN += target & !pred;
 	}
+	double TN = pool.Pool.size() - TP - FP - FN;
 	this->Presicion = TP / (TP + FP);
 	this->Recall = TP / (TP + FN);
 	this->F1 = 1 / (((1 / this->Recall) + (1 / this->Presicion)) / 2);
+	this->Accuracy = (TP + TN) / pool.Pool.size();
+	this->Error = (FP + FN) / pool.Pool.size();
 }
 
 void Tmetrics::Test(TLeaner *L, const TPool &learnPool,
@@ -60,6 +63,26 @@ void Tmetrics::Test(TLeaner *L, const TPool &learnPool,
 	CalcMetrics(L->Learn(learnPool), testPool, number);
 }
 
+
+double Tmetrics::getAccuracy() const
+{
+	return Accuracy;
+}
+
+void Tmetrics::setAccuracy(double value)
+{
+	Accuracy = value;
+}
+
+double Tmetrics::getError() const
+{
+	return Error;
+}
+
+void Tmetrics::setError(double value)
+{
+	Error = value;
+}
 Tmetrics::Tmetrics()
 {
 
