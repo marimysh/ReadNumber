@@ -132,7 +132,7 @@ int main(int argc, char *argv[])
 	//ReadData();
 
 
-	std::string filePath = "../factors_matrix.csv";
+	std::string filePath = "../factors_without_matrix.csv";
 	int razm[] = {100, 200, 400, 500, 700, 1000, 2000, 3000, 4000, 5000, 7000, 10000, 15000, 20000};
 	for (size_t sampleSize = 0; sampleSize < 14; ++sampleSize)
 	{
