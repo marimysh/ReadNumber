@@ -222,25 +222,30 @@ void Symbol::CalculationMomentAboutAxis(int alpha)
 //alpha - в градусах
 {
 	int countPoint = 0;
-	unsigned long long int sumDiam = 0;
+	double sumDiam = 0;
 	double y0, x0;
-	y0 = this->height / 2;
-	x0 = this->width / 2;
+	//y0 = this->height / 2;
+	//x0 = this->width / 2;
+	y0 = 0.5;
+	x0 = 0.5;
 
 	for (size_t i = 0; i < this->binMatrix.size(); ++i)
 		for (size_t j = 0; j < this->binMatrix.at(i).size(); ++j)
 			if (binMatrix.at (i).at (j) == true)
 			{
 				++countPoint;
-				double c = sqrt(pow((x0 - j), 2) + pow((y0 - i), 2));
-				double beta = acos(std::abs(x0 - j) /c);
-				double vega = beta - (alpha * M_PI / 180);
-				sumDiam += c * std::abs(sin(vega));
+				//double c = sqrt(pow((x0 - j), 2) + pow((y0 - i), 2));
+				//double beta = acos(std::abs(x0 - j) /c);
+				//double vega = beta - (alpha * M_PI / 180);
+				double vega = 90 - alpha;
+				double x = j;
+				double c = std::abs((x + 0.0)/28.0 - x0);
+				sumDiam += c * std::abs(sin(vega * M_PI / 180)) * 4;
 			}
-	this->binMomentAboutAxis.push_back((sumDiam + 0.0) / countPoint);
-	//std::cout << "alpha = " << alpha << " "
-	//		  << this->binMomentAboutAxis.at (
-	//				 this->binMomentAboutAxis.size() - 1) << std::endl;
+	this->binMomentAboutAxis.push_back(sumDiam / (countPoint + 0.0));
+	/*std::cout << "alpha = " << alpha << " "
+			  << this->binMomentAboutAxis.at (
+					 this->binMomentAboutAxis.size() - 1) << std::endl;*/
 	return;
 }
 

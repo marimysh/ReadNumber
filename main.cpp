@@ -43,13 +43,13 @@ void SplittoDouble(std::string input, std::vector<double>* out,
 void PrintToFile(Symbol *imageSymbol)
 {
 	std::ofstream outputFile;
-	outputFile.open("../factors_binmatrix.csv", std::ios::app);
+	outputFile.open("../factors_second_moment_alpha.csv", std::ios::app);
 	outputFile << imageSymbol->getName () << ",";
 	/*std::vector<std::vector<int> > matrix = imageSymbol->getMatrix();
 	for (size_t i = 0; i < 28; ++i)
 		for (size_t j = 0; j < 28; ++j)
 			outputFile << (matrix.at(i).at(j) / 255.0) << ",";*/
-	std::vector<std::vector<bool> > hist = imageSymbol->getBinMatrix();
+	/*std::vector<std::vector<bool> > hist = imageSymbol->getBinMatrix();
 	for (size_t i = 0; i < 28; ++i)
 		for (size_t j = 0; j < 28; ++j)
 			outputFile << hist.at(i).at(j) << ",";
@@ -67,12 +67,12 @@ void PrintToFile(Symbol *imageSymbol)
 			   << imageSymbol->getSecondMomentX() / 2.0 << ","
 			   << imageSymbol->getSecondMomentY() / 2.0 << ","
 			   << imageSymbol->getSecondMomentXY() / 2.0 << ",";
-	/*
-std::vector<double> moment;
-imageSymbol->getBinMomentAboutAxis(&moment);
-for (size_t i = 0; i < moment.size(); ++i)
-outputFile << moment.at(i) << ",";
-*/
+	*/
+	std::vector<double> moment;
+	imageSymbol->getBinMomentAboutAxis(&moment);
+	for (size_t i = 0; i < moment.size(); ++i)
+		outputFile << moment.at(i) << ",";
+
 	outputFile << std::endl;
 	outputFile.close();
 	return;
@@ -112,8 +112,8 @@ void ReadData ()
 		//symbolInp->CalculationGravityCentr ();
 		//symbolInp->CalculationSecondMoment ();
 
-		//for (size_t alpha = 0; alpha < 180; alpha += 4)
-		// symbolInp->CalculationMomentAboutAxis(alpha);
+		for (size_t alpha = 0; alpha < 180; alpha += 5)
+		 symbolInp->CalculationMomentAboutAxis(alpha);
 		PrintToFile(symbolInp);
 		delete symbolInp;
 	}
@@ -129,9 +129,9 @@ int main(int argc, char *argv[])
 	//MainWindow w;
 	//w->show();
 
-	//ReadData();
+	ReadData();
 
-
+/*
 	std::string filePath = "../factors_without_matrix.csv";
 	int razm[] = {100, 200, 400, 500, 700, 1000, 2000, 3000, 4000, 5000, 7000, 10000, 15000, 20000};
 	for (size_t sampleSize = 0; sampleSize < 14; ++sampleSize)
@@ -161,7 +161,7 @@ int main(int argc, char *argv[])
 						 metricsLR.getError() << std::endl;
 		}
 		std::cout << std::endl;
-	}
+	}*/
 	return 0;
 
 	//return a.exec();
