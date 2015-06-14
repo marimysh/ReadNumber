@@ -13,7 +13,7 @@ private:
 	std::vector <std::pair <TInstance, double> > favourite;
 	void ReloadMaxFar();
 	TPool pooltrain;
-	int maxFar;
+	double maxFar;
 	double TP;
 	double FP;
 	double FN;

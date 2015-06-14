@@ -59,12 +59,19 @@ int knn::Model(TInstance input, int countNeighbors)
 	favourite.clear();
 	favourite.reserve(countNeighbors);
 
+	double d = MetricEvklid(input, pooltrain.Pool.at(0));
+	maxFar = d;
+	std::pair <TInstance, double> NewN (
+				pooltrain.Pool.at(0), d);
+	this->favourite.push_back(NewN);
+
 	for (size_t itPool = 0; itPool < this->pooltrain.Pool.size(); ++itPool)
 	{
 		double distance = MetricEvklid(input, pooltrain.Pool.at(itPool));
 		if (distance < maxFar)
 		{
-			DeleteFarthestNeighbors();
+			if (this->favourite.size() >= countNeighbors)
+				DeleteFarthestNeighbors();
 			std::pair <TInstance, double> NewNeighbor (
 						pooltrain.Pool.at(itPool), distance);
 			this->favourite.push_back(NewNeighbor);
