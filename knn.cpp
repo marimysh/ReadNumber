@@ -72,18 +72,19 @@ int knn::Model(TInstance input, int countNeighbors)
 		}
 	}
 
-	std::map <int, int> favouriteCount;
+	std::map <int, double> favouriteCount;
 	for (size_t itFavourite = 0; itFavourite < this->favourite.size();
 		 ++itFavourite)
 	{
 		if (favouriteCount.find(this->favourite.at(itFavourite).first.getGoal())
 				== favouriteCount.end())
 			favouriteCount[this->favourite.at(itFavourite).first.getGoal()]
-					= this->favourite.at(itFavourite).second;
+					= 1 / pow(this->favourite.at(itFavourite).second, 2);
 		else
 			favouriteCount[this->favourite.at(itFavourite).first.getGoal()]
 					= favouriteCount[this->favourite.at(itFavourite).first
-					.getGoal()] + this->favourite.at(itFavourite).second;
+					.getGoal()]
+					+ 1 / pow(this->favourite.at(itFavourite).second, 2);
 	}
 
 	if (favouriteCount.size() == 1)
@@ -91,14 +92,13 @@ int knn::Model(TInstance input, int countNeighbors)
 	else
 	{
 		int max = 0;
-		for (std::map<int,int>::iterator it=favouriteCount.begin();
+		for (std::map<int,double>::iterator it=favouriteCount.begin();
 		it != favouriteCount.end(); ++it)
 			if (it->second > max)
 			{
 				max = it->second;
 				res = it->first;
 			}
-
 	}
 	return res;
 }
