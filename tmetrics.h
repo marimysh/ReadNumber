@@ -26,6 +26,7 @@ public:
 	void CalcMetrics (const TLinerModel LM, const TPool &pool, int number);
 	void Test (TLeaner *L, const TPool &learnPool, const TPool &testPool,
 			   int number);
+	void CalcMetricsValue(int sizeSample, double TP, double FP, double FN);
 	double getAccuracy() const;
 	void setAccuracy(double value);
 	double getError() const;

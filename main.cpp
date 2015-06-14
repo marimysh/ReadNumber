@@ -10,6 +10,7 @@
 #include "tlinermodel.h"
 #include "linerregress.h"
 #include "tmetrics.h"
+#include "knn.h"
 
 void SplittoInt2(std::string input, std::vector<int>* out,
 								  std::string separator)
@@ -142,16 +143,19 @@ int main(int argc, char *argv[])
 	//ReadData();
 
 
-	std::string filePath = "../factors_map_gravity.csv";
-	int razm[] = {100, 200, 400, 500, 700, 1000, 2000, 3000, 4000, 5000, 7000, 10000, 15000, 20000, 30000};
+	std::string filePath = "../factors_matrix.csv";
+//	int razm[] = {100, 200, 400, 500, 700, 1000, 2000, 3000, 4000, 5000, 7000,
+//				  10000, 15000, 20000, 30000};
+	int razm[] = {100, 500, 1000, 2000, 3000, 4000, 5000, 7000,
+				  10000, 15000, 20000, 30000};
 	for (size_t sampleSize = 0; sampleSize < 15; ++sampleSize)
 	{
-		std::cout << "L = " << razm[sampleSize] << " T = " << 10000 << std::endl;
+		std::cout << "L = " << razm[sampleSize] << std::endl;
 		TPool learnp;
 		learnp.ReadLearn(filePath, razm[sampleSize]);
 		TPool testp;
 		testp.ReadTest(filePath, razm[sampleSize], 10000);
-
+/*
 		std::vector<TLinerModel> weight;
 		for (size_t i = 0; i < 10; ++i)
 		{
@@ -172,6 +176,11 @@ int main(int argc, char *argv[])
 		}
 		std::cout << std::endl;
 	}
+	*/
+		knn MethodKNN(learnp);
+		std::cout << MethodKNN.CalcMetrics(testp, 3) << std::endl;
+	}
+
 	return 0;
 
 	//return a.exec();

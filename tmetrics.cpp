@@ -63,6 +63,16 @@ void Tmetrics::Test(TLeaner *L, const TPool &learnPool,
 	CalcMetrics(L->Learn(learnPool), testPool, number);
 }
 
+void Tmetrics::CalcMetricsValue(int sizeSample, double TP, double FP, double FN)
+{
+	double TN = sizeSample - TP - FP - FN;
+	this->Presicion = TP / (TP + FP);
+	this->Recall = TP / (TP + FN);
+	this->F1 = 1 / (((1 / this->Recall) + (1 / this->Presicion)) / 2);
+	this->Accuracy = (TP + TN) / sizeSample;
+	this->Error = (FP + FN) / sizeSample;
+}
+
 
 double Tmetrics::getAccuracy() const
 {

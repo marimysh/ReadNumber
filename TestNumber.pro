@@ -22,7 +22,9 @@ SOURCES += main.cpp\
     tpool.cpp \
     tlinermodel.cpp \
     tleaner.cpp \
-    linerregress.cpp
+    linerregress.cpp \
+    adaboost.cpp \
+    knn.cpp
 
 HEADERS  += \
     formwid.h \
@@ -33,7 +35,9 @@ HEADERS  += \
     tpool.h \
     tlinermodel.h \
     tleaner.h \
-    linerregress.h
+    linerregress.h \
+    adaboost.h \
+    knn.h
 
 FORMS    += \
     formwid.ui
