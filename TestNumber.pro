@@ -24,20 +24,47 @@ SOURCES += main.cpp\
     tleaner.cpp \
     linerregress.cpp \
     adaboost.cpp \
-    knn.cpp
+    knn.cpp \
+    alglib/linalg.cpp \
+    alglib/alglibinternal.cpp \
+    alglib/alglibmisc.cpp \
+    alglib/ap.cpp \
+    alglib/dataanalysis.cpp \
+    alglib/diffequations.cpp \
+    alglib/fasttransforms.cpp \
+    alglib/interpolation.cpp \
+    alglib/integration.cpp \
+    alglib/optimization.cpp \
+    alglib/solvers.cpp \
+    alglib/specialfunctions.cpp \
+    alglib/statistics.cpp \
 
 HEADERS  += \
     formwid.h \
     symbol.h \
     machinelearning.h \
     tinstance.h \
-	tmetrics.h \
+    tmetrics.h \
     tpool.h \
     tlinermodel.h \
     tleaner.h \
     linerregress.h \
     adaboost.h \
-    knn.h
+    knn.h  \
+    alglib/linalg.h \
+    alglib/linalg.h \
+    alglib/alglibinternal.h \
+    alglib/alglibmisc.h \
+    alglib/ap.h \
+    alglib/dataanalysis.h \
+    alglib/diffequations.h \
+    alglib/fasttransforms.h \
+    alglib/interpolation.h \
+    alglib/integration.h \
+    alglib/optimization.h \
+    alglib/solvers.h \
+    alglib/specialfunctions.h \
+    alglib/statistics.h \
 
 FORMS    += \
     formwid.ui
