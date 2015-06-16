@@ -8,6 +8,55 @@ double knn::MetricEvklid(TInstance point1, TInstance point2)
 	return sqrt(distance);
 }
 
+double knn::MetricMakhalanobisa(TInstance point1, TInstance point2)
+{
+	double distance = 0;
+	std::vector<std::vector<double> > S;
+	std::vector<std::vector<double> > X;
+	X.push_back (point1.features);
+	double mo = 0;
+	for (size_t i = 0; i < point2.features.size (); ++i)
+		mo += point2.features.at(i);
+	mo /= point2.features.size ();
+	std::transform(X.begin(), X.end(), X.begin(),
+				   std::bind1st(std::multiplies<T>(),mo));
+}
+
+std::vector <std::vector<double> > XTX
+(std::vector<std::vector<double> > v)
+{
+	std::vector <std::vector<double> > result;
+	for (size_t i = 0; i < v.size (); ++i)
+		result.at(i).reserve(v.size ());
+	for (size_t i = 0; i < v.size (); ++i)
+		for (size_t j = i; j < v.size (); ++j)
+		{
+			double value = v.at(i).at(0) * v.at(j).at(0) +
+						   v.at(i).at(1) * v.at(j).at(1);
+			result.at(i).at(j) = value;
+			result.at(j).at(i) = value;
+		}
+	return result;
+}
+
+std::vector <std::vector<double> > MultiMatrix
+(std::vector<std::vector<double> > v1,
+ std::vector<std::vector<double> > v2)
+{
+	std::vector <std::vector<double> > result;
+	for (size_t i = 0; i < v1.at (0).size (); ++i)
+		result.at(i).reserve(v2.size ());
+	for (size_t i = 0; i < v1.size (); ++i)
+		for (size_t j = 0; j < v2.at(0).size (); ++j)
+		{
+			double value = 0;
+			for (size_t k = 0; k < v1.at(0).size(); ++k)
+				value += v1.at (i).at (k) * v2.at (k).at (j);
+			result.at(i).at(j) = value;
+		}
+	return result;
+}
+
 void knn::DeleteFarthestNeighbors()
 {
 	for (size_t i = 0; i < favourite.size(); ++i)
