@@ -149,7 +149,7 @@ int main(int argc, char *argv[])
 	std::string filePath = "../factors_matrix.csv";
 //	int razm[] = {100, 200, 400, 500, 700, 1000, 2000, 3000, 4000, 5000, 7000,
 //				  10000, 15000, 20000, 30000};
-/*	int razm[] = {100, 500, 1000, 2000, 3000, 4000, 5000, 7000,
+	int razm[] = {1000, 2000, 3000, 4000, 5000, 7000,
 				  10000, 15000, 20000, 30000};
 	for (size_t sampleSize = 0; sampleSize < 12; ++sampleSize)
 	{
@@ -157,7 +157,7 @@ int main(int argc, char *argv[])
 		TPool learnp;
 		learnp.ReadLearn(filePath, razm[sampleSize]);
 		TPool testp;
-		testp.ReadTest(filePath, razm[sampleSize], 3000);
+		testp.ReadTest(filePath, razm[sampleSize], 1000);
 /*
 		std::vector<TLinerModel> weight;
 		for (size_t i = 0; i < 10; ++i)
@@ -180,17 +180,17 @@ int main(int argc, char *argv[])
 		std::cout << std::endl;
 	}
 	*/
-	//	knn MethodKNN(learnp);
-	//	std::cout << MethodKNN.CalcMetrics(testp, 3) << std::endl;
-	//}
-
+		knn MethodKNN(learnp);
+		std::cout << MethodKNN.CalcMetrics(testp, 3) << std::endl;
+	}
+/*
 	real_2d_array a = "[[2,1],[1,2]]";
 		ae_int_t info;
 		matinvreport rep;
 		spdmatrixinverse(a, info, rep);
 		printf("%d\n", int(info)); // EXPECTED: 1
 		printf("%s\n", a.tostring(4).c_str()); // EXPECTED: [[0.666666,-0.333333],[-0.333333,0.666666]]
-
+*/
 	return 0;
 
 	//return a.exec();

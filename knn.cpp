@@ -8,31 +8,15 @@ double knn::MetricEvklid(TInstance point1, TInstance point2)
 	return sqrt(distance);
 }
 
-double knn::MetricMakhalanobisa(TInstance point1, TInstance point2)
+std::vector <std::vector<double> > knn::XTX (std::vector<double> v)
 {
-	double distance = 0;
-	std::vector<std::vector<double> > S;
-	std::vector<std::vector<double> > X;
-	X.push_back (point1.features);
-	double mo = 0;
-	for (size_t i = 0; i < point2.features.size (); ++i)
-		mo += point2.features.at(i);
-	mo /= point2.features.size ();
-	std::transform(X.begin(), X.end(), X.begin(),
-				   std::bind1st(std::multiplies<T>(),mo));
-}
+	std::vector <std::vector<double> > result (v.size(),
 
-std::vector <std::vector<double> > XTX
-(std::vector<std::vector<double> > v)
-{
-	std::vector <std::vector<double> > result;
-	for (size_t i = 0; i < v.size (); ++i)
-		result.at(i).reserve(v.size ());
+											   std::vector <double> (v.size()));
 	for (size_t i = 0; i < v.size (); ++i)
 		for (size_t j = i; j < v.size (); ++j)
 		{
-			double value = v.at(i).at(0) * v.at(j).at(0) +
-						   v.at(i).at(1) * v.at(j).at(1);
+			double value = v.at(i) * v.at(j);
 			result.at(i).at(j) = value;
 			result.at(j).at(i) = value;
 		}
@@ -43,18 +27,65 @@ std::vector <std::vector<double> > MultiMatrix
 (std::vector<std::vector<double> > v1,
  std::vector<std::vector<double> > v2)
 {
-	std::vector <std::vector<double> > result;
-	for (size_t i = 0; i < v1.at (0).size (); ++i)
-		result.at(i).reserve(v2.size ());
-	for (size_t i = 0; i < v1.size (); ++i)
-		for (size_t j = 0; j < v2.at(0).size (); ++j)
+	std::vector <std::vector<double> > result (
+				v1.at(0).size(), std::vector<double> (v2.size()));
+
+	//std::cout << v1.size() << " " << v1.at(0).size() << std::endl;
+	//std::cout << v2.size() << " " << v2.at(0).size() << std::endl;
+	for (size_t i = 0; i < v1.at(0).size (); ++i)
+		for (size_t j = 0; j < v2.size (); ++j)
 		{
 			double value = 0;
-			for (size_t k = 0; k < v1.at(0).size(); ++k)
-				value += v1.at (i).at (k) * v2.at (k).at (j);
+			for (size_t k = 0; k < v1.size(); ++k)
+				value += v1.at (k).at (i) * v2.at (j).at (k);
 			result.at(i).at(j) = value;
 		}
 	return result;
+}
+
+double knn::MetricMakhalanobisa(TInstance point1, TInstance point2)
+{
+	std::vector<std::vector<double> > S;
+	std::vector<double> X;
+	X = point1.features;
+	double mo = 0;
+	for (size_t i = 0; i < point2.features.size (); ++i)
+		mo += point2.features.at(i);
+	mo /= point2.features.size ();
+
+	for (size_t i = 0; i < X.size(); ++i)
+		X.at(i) -= mo;
+	S = XTX(X);
+	for (size_t i = 0; i < S.size(); ++i)
+		for (size_t j = i; j < S.at(0).size(); ++j)
+		{
+			S.at(i).at(j) *= 1.0 / (X.size() - 1.0);
+			S.at(i).at(j) = S.at(j).at(i);
+		}
+
+	real_2d_array S1;
+	S1.setlength(S.size(), S.at(0).size());
+	for (size_t i = 0; i < S.size(); ++i)
+		for (size_t j = 0; j < S.at(0).size(); ++j)
+			S1(i,j) = S.at(i).at(j);
+	ae_int_t info;
+	matinvreport rep;
+	spdmatrixinverse(S1, info, rep);
+	for (size_t i = 0; i < S.size(); ++i)
+		for (size_t j = 0; j < S.at(0).size(); ++j)
+			S.at(i).at(j) = S1(i,j);
+
+	std::vector<std::vector <double> > vT, v;
+	for (size_t i = 0; i < X.size(); ++i)
+	{
+		std::vector<double> temp;
+		temp.push_back(X.at(i));
+		vT.push_back(temp);
+	}
+	v.push_back(X);
+	std::vector<std::vector <double> > D = MultiMatrix(MultiMatrix(vT, S), v);
+	//std::cout << D.size() << " " << D.at(0).size() << std::endl;
+	return sqrt(D.at(0).at(0));
 }
 
 void knn::DeleteFarthestNeighbors()
@@ -108,7 +139,7 @@ int knn::Model(TInstance input, int countNeighbors)
 	favourite.clear();
 	favourite.reserve(countNeighbors);
 
-	double d = MetricEvklid(input, pooltrain.Pool.at(0));
+	double d = MetricMakhalanobisa(input, pooltrain.Pool.at(0));
 	maxFar = d;
 	std::pair <TInstance, double> NewN (
 				pooltrain.Pool.at(0), d);
@@ -173,7 +204,8 @@ double knn::CalcMetrics(TPool test, int countNeighbors)
 	double truly = 0;
 	for (size_t itPool = 0; itPool < test.Pool.size(); ++itPool)
 	{
-		//std::cout << itPool << std::endl;
+		if (itPool % 100 == 0)
+			std::cout << itPool << std::endl;
 		if (this->isPositive(test.Pool.at(itPool), countNeighbors))
 			truly++;
 	}
