@@ -145,19 +145,26 @@ int main(int argc, char *argv[])
 
 	//ReadData();
 
+	std::string filePath = "../factors_binmatrix.csv";
+	std::string namefile = "binmatrix_3";
+	int razm[] = {100, 500, 700, 1000, 1500, 2000, 2500, 3000, 4000, 5000, 7000,
+				  10000, 12500, 15000, 17500, 20000, 25000, 30000};
+//	int razm[] = {100, 200, 400};
+	int countrazm = 18;
 
-	std::string filePath = "../factors_matrix.csv";
-//	int razm[] = {100, 200, 400, 500, 700, 1000, 2000, 3000, 4000, 5000, 7000,
-//				  10000, 15000, 20000, 30000};
-	int razm[] = {1000, 2000, 3000, 4000, 5000, 7000,
-				  10000, 15000, 20000, 30000};
-	for (size_t sampleSize = 0; sampleSize < 12; ++sampleSize)
+	double metricsForNumber[countrazm][10][5];
+	for (size_t l = 0; l < countrazm; ++l)
+	for (int j = 0; j < 10; ++j)
+		for (int k = 0; k < 5; ++k)
+			metricsForNumber[l][j][k] = 0;
+
+	for (size_t sampleSize = 0; sampleSize < countrazm; ++sampleSize)
 	{
-		std::cout << "L = " << razm[sampleSize] << std::endl;
+		std::cout << razm[sampleSize] << std::endl;
 		TPool learnp;
 		learnp.ReadLearn(filePath, razm[sampleSize]);
 		TPool testp;
-		testp.ReadTest(filePath, razm[sampleSize], 1000);
+		testp.ReadTest(filePath, razm[sampleSize], 10000);
 /*
 		std::vector<TLinerModel> weight;
 		for (size_t i = 0; i < 10; ++i)
@@ -166,31 +173,103 @@ int main(int argc, char *argv[])
 			weight.push_back(LG);
 		}
 
-		for (size_t i = 0; i < 10; ++i)
+		for (int j = 0; j < 10; ++j)
 		{
 			Tmetrics metricsLR;
-			metricsLR.CalcMetrics(weight.at(i), testp, i);
-			std::cout << i << ": ";
-			std::cout << metricsLR.getPresicion() << " " <<
-						 metricsLR.getRecall() << " " <<
-						 metricsLR.getF1() << " " <<
-						 metricsLR.getAccuracy() << " " <<
-						 metricsLR.getError() << std::endl;
+			metricsLR.CalcMetrics(weight.at(j), testp, j);
+
+			metricsForNumber[sampleSize][j][0] = metricsLR.getPresicion();
+			metricsForNumber[sampleSize][j][1] = metricsLR.getRecall();
+			metricsForNumber[sampleSize][j][2] = metricsLR.getF1();
+			metricsForNumber[sampleSize][j][3] = metricsLR.getAccuracy();
+			metricsForNumber[sampleSize][j][4] = metricsLR.getError();
 		}
-		std::cout << std::endl;
-	}
-	*/
-		knn MethodKNN(learnp);
-		std::cout << MethodKNN.CalcMetrics(testp, 3) << std::endl;
-	}
-/*
-	real_2d_array a = "[[2,1],[1,2]]";
-		ae_int_t info;
-		matinvreport rep;
-		spdmatrixinverse(a, info, rep);
-		printf("%d\n", int(info)); // EXPECTED: 1
-		printf("%s\n", a.tostring(4).c_str()); // EXPECTED: [[0.666666,-0.333333],[-0.333333,0.666666]]
 */
+		knn MethodKNN(learnp);
+		MethodKNN.CalcMetrics(testp, 3);
+		for (int j = 0; j < 10; ++j)
+		{
+			Tmetrics metricsLR;
+			metricsLR.CalcMetricsValue(10000, MethodKNN.getTP(j),
+									   MethodKNN.getFP(j), MethodKNN.getFN(j));
+			metricsForNumber[sampleSize][j][0] = metricsLR.getPresicion();
+			metricsForNumber[sampleSize][j][1] = metricsLR.getRecall();
+			metricsForNumber[sampleSize][j][2] = metricsLR.getF1();
+			metricsForNumber[sampleSize][j][3] = metricsLR.getAccuracy();
+			metricsForNumber[sampleSize][j][4] = metricsLR.getError();
+		}
+
+	}
+
+	std::ofstream outputFile1;
+	outputFile1.open ("../graphs/KNN/Presision_" + namefile + ".txt");
+	std::ofstream outputFile2;
+	outputFile2.open ("../graphs/KNN/Recall_" + namefile + ".txt");
+	std::ofstream outputFile3;
+	outputFile3.open ("../graphs/KNN/F1_" + namefile + ".txt");
+	std::ofstream outputFile4;
+	outputFile4.open ("../graphs/KNN/Accuracy_" + namefile + ".txt");
+	std::ofstream outputFile5;
+	outputFile5.open ("../graphs/KNN/Error_" + namefile + ".txt");
+
+	for (int i = 0; i < countrazm; ++i)
+	{
+		outputFile1 << razm[i] << " ";
+		outputFile2 << razm[i] << " ";
+		outputFile3 << razm[i] << " ";
+		outputFile4 << razm[i] << " ";
+		outputFile5 << razm[i] << " ";
+
+		for (int j = 0; j < 10; ++j)
+		{
+			outputFile1 << metricsForNumber[i][j][0] << " ";
+			outputFile2 << metricsForNumber[i][j][1] << " ";
+			outputFile3 << metricsForNumber[i][j][2] << " ";
+			outputFile4 << metricsForNumber[i][j][3] << " ";
+			outputFile5 << metricsForNumber[i][j][4] << " ";
+		}
+		outputFile1 << std::endl;
+		outputFile2 << std::endl;
+		outputFile3 << std::endl;
+		outputFile4 << std::endl;
+		outputFile5 << std::endl;
+	}
+	outputFile1.close();
+	outputFile2.close();
+	outputFile3.close();
+	outputFile4.close();
+	outputFile5.close();
+
+	outputFile1.open ("../graphs/KNN/av_" + namefile + ".txt");
+
+	for (int i = 0; i < countrazm; ++i)
+	{
+		outputFile1 << razm[i] << " ";
+
+		double av1 = 0;
+		double av2 = 0;
+		double av3 = 0;
+		double av4 = 0;
+		double av5 = 0;
+
+		for (int j = 0; j < 10; ++j)
+		{
+			av1 += metricsForNumber[i][j][0];
+			av2 += metricsForNumber[i][j][1];
+			av3 += metricsForNumber[i][j][2];
+			av4 += metricsForNumber[i][j][3];
+			av5 += metricsForNumber[i][j][4];
+		}
+		av1 /= 10;
+		av2 /= 10;
+		av3 /= 10;
+		av4 /= 10;
+		av5 /= 10;
+		outputFile1 << av1 << " " << av2 << " " << av3 << " " << av4 << " "
+						<< av5;
+		outputFile1 << std::endl;
+	}
+	outputFile1.close();
 	return 0;
 
 	//return a.exec();

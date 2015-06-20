@@ -49,6 +49,7 @@ void Tmetrics::CalcMetrics(const TLinerModel LM, const TPool &pool, int number)
 		FP += !target & pred;
 		FN += target & !pred;
 	}
+	CalcMetricsValue(pool.Pool.size(), TP, FP, FN);
 	double TN = pool.Pool.size() - TP - FP - FN;
 	this->Presicion = TP / (TP + FP);
 	this->Recall = TP / (TP + FN);

@@ -111,6 +111,21 @@ double knn::getFN() const
 	return FN;
 }
 
+double knn::getTP(int i)
+{
+	return TPm[i];
+}
+
+double knn::getFP(int i)
+{
+	return FPm[i];
+}
+
+double knn::getFN(int i)
+{
+	return FNm[i];
+}
+
 double knn::getFP() const
 {
 	return FP;
@@ -125,6 +140,12 @@ double knn::getTP() const
 knn::knn(TPool train)
 {
 	this->pooltrain = train;
+	for (int i = 0; i < 10; ++i)
+	{
+		this->TPm[i] = 0;
+		this->FNm[i] = 0;
+		this->FPm[i] = 0;
+	}
 }
 
 knn::~knn()
@@ -139,7 +160,7 @@ int knn::Model(TInstance input, int countNeighbors)
 	favourite.clear();
 	favourite.reserve(countNeighbors);
 
-	double d = MetricMakhalanobisa(input, pooltrain.Pool.at(0));
+	double d = MetricEvklid(input, pooltrain.Pool.at(0));
 	maxFar = d;
 	std::pair <TInstance, double> NewN (
 				pooltrain.Pool.at(0), d);
@@ -199,16 +220,22 @@ bool knn::isPositive(TInstance input, int countNeighbors)
 		return false;
 }
 
-double knn::CalcMetrics(TPool test, int countNeighbors)
+void knn::CalcMetrics(TPool test, int countNeighbors)
 {
 	double truly = 0;
 	for (size_t itPool = 0; itPool < test.Pool.size(); ++itPool)
 	{
-		if (itPool % 100 == 0)
-			std::cout << itPool << std::endl;
-		if (this->isPositive(test.Pool.at(itPool), countNeighbors))
-			truly++;
+		//if (itPool % 100 == 0)
+		//	std::cout << itPool << std::endl;
+		bool pred = this->isPositive(test.Pool.at(itPool), countNeighbors);
+		for (int i = 0; i < 10; ++i)
+		{
+			bool target = test.Pool.at(itPool).getGoal() && i;
+			TPm[i] += target & pred;
+			FPm[i] += !target & pred;
+			FNm[i] += target & !pred;
+		}
 	}
-	return truly / test.Pool.size();
+	return;
 }
 

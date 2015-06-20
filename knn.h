@@ -23,15 +23,19 @@ private:
 	double TP;
 	double FP;
 	double FN;
+	double TPm [10], FPm[10], FNm[10];
 public:
 	knn(TPool train);
 	~knn();
 	int Model (TInstance input, int countNeighbors);
 	bool isPositive(TInstance input, int countNeighbors);
-	double CalcMetrics(TPool test, int countNeighbors);
+	void CalcMetrics(TPool test, int countNeighbors);
 	double getTP() const;
 	double getFP() const;
 	double getFN() const;
+	double getTP(int i);
+	double getFP(int i);
+	double getFN(int i);
 };
 
 #endif // KNN_H
