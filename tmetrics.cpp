@@ -67,6 +67,7 @@ void Tmetrics::Test(TLeaner *L, const TPool &learnPool,
 void Tmetrics::CalcMetricsValue(int sizeSample, double TP, double FP, double FN)
 {
 	double TN = sizeSample - TP - FP - FN;
+	std::cout << TP << " " << TN << " " << FP << " " << FN << std::endl;
 	this->Presicion = TP / (TP + FP);
 	this->Recall = TP / (TP + FN);
 	this->F1 = 1 / (((1 / this->Recall) + (1 / this->Presicion)) / 2);

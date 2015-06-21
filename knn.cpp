@@ -214,6 +214,7 @@ int knn::Model(TInstance input, int countNeighbors)
 bool knn::isPositive(TInstance input, int countNeighbors)
 {
 	int Prediction = Model(input, countNeighbors);
+	//std::cout << Prediction << " " << input.getGoal() << std::endl;
 	if (Prediction == input.getGoal())
 		return true;
 	else
@@ -230,7 +231,11 @@ void knn::CalcMetrics(TPool test, int countNeighbors)
 		bool pred = this->isPositive(test.Pool.at(itPool), countNeighbors);
 		for (int i = 0; i < 10; ++i)
 		{
-			bool target = test.Pool.at(itPool).getGoal() && i;
+			bool target;
+			if (test.Pool.at(itPool).getGoal() == i)
+				target = true;
+			else
+				target = false;
 			TPm[i] += target & pred;
 			FPm[i] += !target & pred;
 			FNm[i] += target & !pred;

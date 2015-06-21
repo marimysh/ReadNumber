@@ -145,12 +145,13 @@ int main(int argc, char *argv[])
 
 	//ReadData();
 
-	std::string filePath = "../factors_binmatrix.csv";
-	std::string namefile = "binmatrix_3";
-	int razm[] = {100, 500, 700, 1000, 1500, 2000, 2500, 3000, 4000, 5000, 7000,
-				  10000, 12500, 15000, 17500, 20000, 25000, 30000};
-//	int razm[] = {100, 200, 400};
-	int countrazm = 18;
+	std::string filePath = "../factors_matrix.csv";
+	std::string namefile = "matrix_3";
+//	int razm[] = {100, 500, 700, 1000, 1500, 2000, 2500, 3000, 4000, 5000, 7000,
+//				  10000, 12500, 15000, 17500, 20000, 25000, 30000};
+	int razm[] = {100, 500, 1000, 2000, 3000, 4000, 5000, 7000,
+	10000, 15000, 20000, 30000};
+	int countrazm = 12;
 
 	double metricsForNumber[countrazm][10][5];
 	for (size_t l = 0; l < countrazm; ++l)
@@ -164,7 +165,7 @@ int main(int argc, char *argv[])
 		TPool learnp;
 		learnp.ReadLearn(filePath, razm[sampleSize]);
 		TPool testp;
-		testp.ReadTest(filePath, razm[sampleSize], 10000);
+		testp.ReadTest(filePath, razm[sampleSize], 2000);
 /*
 		std::vector<TLinerModel> weight;
 		for (size_t i = 0; i < 10; ++i)
@@ -190,7 +191,7 @@ int main(int argc, char *argv[])
 		for (int j = 0; j < 10; ++j)
 		{
 			Tmetrics metricsLR;
-			metricsLR.CalcMetricsValue(10000, MethodKNN.getTP(j),
+			metricsLR.CalcMetricsValue(2000, MethodKNN.getTP(j),
 									   MethodKNN.getFP(j), MethodKNN.getFN(j));
 			metricsForNumber[sampleSize][j][0] = metricsLR.getPresicion();
 			metricsForNumber[sampleSize][j][1] = metricsLR.getRecall();
